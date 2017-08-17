@@ -29,11 +29,11 @@ public class Read_Random_Order_Summ {
 		int [] num1 = new int[num];		//陣列0~10筆(練習檔第一筆)
 		for (int i=0;i<num;i++){num1[i]=i;}	//賦予第一個num1[0~9]陣列0~9的數值
 		int [] order = new int[num];		//宣告第二個用作記錄順序的陣列
-		
+		System.out.print("隨機順序：");
 		for (int i=0;i<order.length;i++){	//共執行10次(筆)
 			ran_num= ran.nextInt(num-i);	//亂數-i 是因為 假設一開始0~9(亂數範圍) 每取走1個值範圍就減少1筆(0~8)..(0~7)..類推
 			order[i]=num1[ran_num];		//將num1[ran_num]內的值取走 給order[0]..1..2類推
-			//System.out.print(order[i]+" ");
+			System.out.print(order[i]+" "); //觀看順序
 			for (int j=ran_num;j<order.length-i-1;j++){
 				num1[j] = num1[j+1];//每取走一筆 將後面每一筆往前挪1格
 			}
@@ -45,7 +45,7 @@ public class Read_Random_Order_Summ {
 				sum += Math.sqrt(Math.pow(xy[order[i]][0]-xy[order[i+1]][0], 2)+Math.pow(xy[order[i]][1]-xy[order[i+1]][1], 2));
 			}
 			sum += Math.sqrt(Math.pow(xy[order[num-1]][0]-xy[order[0]][0], 2)+Math.pow(xy[order[num-1]][1]-xy[order[0]][1], 2));
-			System.out.println("距離總和："+sum);
+			System.out.println("\n"+"距離總和："+sum);
 			
 		
 		//  Math.sqrt(36); 根號
