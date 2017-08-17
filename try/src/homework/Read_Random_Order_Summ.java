@@ -26,7 +26,7 @@ public class Read_Random_Order_Summ {
 		
 		Random ran = new Random();       	//宣告亂數
 		int ran_num;				//接收亂數產生的值
-		int [] num1 = new int[num];		//陣列0~10筆(練習檔第一筆)
+		int [] num1 = new int[num];		//陣列0~9筆(練習檔第一筆)
 		for (int i=0;i<num;i++){num1[i]=i;}	//賦予第一個num1[0~9]陣列0~9的數值
 		int [] order = new int[num];		//宣告第二個用作記錄順序的陣列
 		System.out.print("隨機順序：");
