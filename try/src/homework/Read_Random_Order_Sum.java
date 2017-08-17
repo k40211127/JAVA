@@ -1,9 +1,5 @@
 package homework;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 public class Read_Random_Order_Sum {
@@ -15,7 +11,6 @@ public class Read_Random_Order_Sum {
 		double xy[][] = new double[num][2];        
 		
 		String temp="",bf[];
-		double temp2;
 		int count = 0;
 		while(count < num){        
 			temp = br.readLine();  
@@ -29,31 +24,14 @@ public class Read_Random_Order_Sum {
 		br.close();
 
 		
-		Random ran = new Random();          
-		/*int[] number = new int[num];		
-		for (int a=0; a<number.length;++a) {
-		    int i = 0;
-		    pick:
-		    while (i == 0) {
-		        i = ran.ints(1, num+1).findFirst().getAsInt();
-		        for (int b = 0; b < a; ++b) {
-		            if (number[b] == i) {
-		                i = 0;
-		                continue pick;
-		            }
-		        }
-		        number[a] = i; 
-		    }
-		}*/
-		
-		Random ran2 = new Random();
-		int ran_num;
-		int [] num1 = new int[num];
-		for (int i=0;i<num;i++){ num1[i]=i;}
+		Random ran = new Random();       		//宣告亂數
+		int ran_num;							//接收亂數產生的值
+		int [] num1 = new int[num];				//陣列0~10筆(練習檔第一筆)
+		for (int i=0;i<num;i++){num1[i]=i;}	    //
 		int [] order = new int[num];
 		
 		for (int i=0;i<order.length;i++){
-			ran_num= ran2.nextInt(num-i);
+			ran_num= ran.nextInt(num-i);
 			order[i]=num1[ran_num];	
 			//System.out.print(order[i]+" ");
 			for (int j=ran_num;j<order.length-i-1;j++){
@@ -67,7 +45,7 @@ public class Read_Random_Order_Sum {
 				sum += Math.sqrt(Math.pow(xy[order[i]][0]-xy[order[i+1]][0], 2)+Math.pow(xy[order[i]][1]-xy[order[i+1]][1], 2));
 			}
 			sum += Math.sqrt(Math.pow(xy[order[num-1]][0]-xy[order[0]][0], 2)+Math.pow(xy[order[num-1]][1]-xy[order[0]][1], 2));
-			System.out.println("\n"+"距離總和："+sum);
+			System.out.println("距離總和："+sum);
 			
 		
 		//  Math.sqrt(36); 根號
