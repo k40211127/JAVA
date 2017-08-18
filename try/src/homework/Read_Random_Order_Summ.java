@@ -72,12 +72,11 @@ public class Read_Random_Order_Summ {
 				 step2.用一個 IF (布林函數!=True) 
 						包住第一次的整個運算
 					     else
-					        for (int i=0;i<長度-2;i++)
-							for (int j=i+1;j<長度;j++)
-								if (Record[i][j][0]!=0  or Record[j][i][0] !=0)
-									sum += Record[i][j][0];
-								else
-									運算  再紀錄到三維裡面
-								end if                            */
+					        for (int i=0;i<長度-1;i++)
+							if (Record[i][j][0]!=0  or Record[j][i][0] !=0)
+								sum += Record[i][+1][0];
+							else
+								運算  再紀錄到三維裡面
+							end if                            */
 	}
 }
