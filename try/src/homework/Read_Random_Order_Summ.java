@@ -54,10 +54,10 @@ public class Read_Random_Order_Summ {
 		//再一個IF判斷Record[i][i+1][0]是否!=0 是就直接sum2+=Record[i][i+1][0]; 否就在記錄進去,這樣之後重複都會直接+而不會重複運算;
 		
 		double sum=0.0;
-			for (int i=0;i<xy.length-1;i++){ //兩點距離公式；根號((x1-x2)平方+(y1-y2)平方)
-				sum += Math.sqrt(Math.pow(xy[order[i]][0]-xy[order[i+1]][0], 2)+Math.pow(xy[order[i]][1]-xy[order[i+1]][1], 2));
+			for (int i=0;i<xy.length-1;i++){ //兩點距離公式；根號( ( (x1-x2)平方)+(y1-y2)平方) )
+				sum += Math.sqrt(Math.pow((xy[order[i]][0]-xy[order[i+1]][0]),2) + Math.pow((xy[order[i]][1]-xy[order[i+1]][1]),2));
 			}
-			sum += Math.sqrt(Math.pow(xy[order[num-1]][0]-xy[order[0]][0], 2)+Math.pow(xy[order[num-1]][1]-xy[order[0]][1], 2));
+			sum += Math.sqrt(Math.pow((xy[order[num-1]][0]-xy[order[0]][0]), 2)+Math.pow((xy[order[num-1]][1]-xy[order[0]][1]), 2));
 			System.out.println("\n"+"距離總和："+sum);
 			
 		
