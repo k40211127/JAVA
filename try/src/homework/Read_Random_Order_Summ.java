@@ -38,6 +38,18 @@ public class Read_Random_Order_Summ {
 				num1[j] = num1[j+1];//每取走一筆 將後面每一筆往前挪1格
 			}
 		}
+		
+		double Record[][][] = new double[num][num][1]; //三維陣列 用作紀錄(Step1.完成 Step2.待續)
+		double sum2=0.0;
+		for (int i=0;i<xy.length-1;i++){
+				Record[i][i+1][0] = Math.sqrt(Math.pow((xy[order[i]][0]-xy[order[i+1]][0]),2) + Math.pow((xy[order[i]][1]-xy[order[i+1]][1]),2));
+				Record[i+1][i][0] = Record[i][i+1][0];
+				sum2+=Record[i][i+1][0];
+			    //Math.sqrt(Math.pow(xy[order[i]][0]-xy[order[i+1]][0], 2)+Math.pow(xy[order[i]][1]-xy[order[i+1]][1], 2));
+		}
+		Record[order[num-1]][order[0]][0] = Math.sqrt(Math.pow((xy[order[num-1]][0]-xy[order[0]][0]),2) + Math.pow((xy[order[num-1]][1]-xy[order[0]][1]),2));
+		sum2+=Record[order[num-1]][order[0]][0];
+		System.out.println("距離總和："+sum2); //這邊的結果與下面的結果是一樣的接下來要做第二步
 
 		
 		double sum=0.0;
@@ -55,13 +67,8 @@ public class Read_Random_Order_Summ {
 		//  二. 順序； 隨機點(原點)與下一個隨機連接點(類推)
 		//  三. 總和；一直到10個座標都連完1次, 接著在,連回第一個隨機點(原點).
 		//  四. 重複運算；step1.第一次執行時全部是空的，所以第一次運算時，不做比對，而是直接運算再將值填入三維陣列中(兩兩交叉比對)
-			/*	for (int i=0;i<長度-2;i++)
-					for (int j=i+1;j<長度;j++)
-						num[] 順序假設是 3 1 2 5 4 ... 那我就是
-						sum < 運算完後 將i與j值 寫入三維陣列 
-						Record[i][j][0] = 運算值(非sum)
-						布林 = True(第一次執行起初是False)
-				step2.用一個 IF (布林函數!=True) 
+/*				       布林 = True(第一次執行起初是False)
+				 step2.用一個 IF (布林函數!=True) 
 						包住第一次的整個運算
 					     else
 					        for (int i=0;i<長度-2;i++)
