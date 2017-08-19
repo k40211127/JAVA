@@ -42,10 +42,9 @@ public class Read_Random_Order_Summ {
 		double Record[][][] = new double[num][num][1]; //三維陣列 用作紀錄(Step1.完成 Step2.待續)
 		double sum2=0.0;
 		for (int i=0;i<xy.length-1;i++){
-				Record[i][i+1][0] = Math.sqrt(Math.pow((xy[order[i]][0]-xy[order[i+1]][0]),2) + Math.pow((xy[order[i]][1]-xy[order[i+1]][1]),2));
-				Record[i+1][i][0] = Record[i][i+1][0];
-				sum2+=Record[i][i+1][0];
-			    //Math.sqrt(Math.pow(xy[order[i]][0]-xy[order[i+1]][0], 2)+Math.pow(xy[order[i]][1]-xy[order[i+1]][1], 2));
+				Record[order[i]][order[i+1]][0] = Math.sqrt(Math.pow((xy[order[i]][0]-xy[order[i+1]][0]),2) + Math.pow((xy[order[i]][1]-xy[order[i+1]][1]),2));
+				Record[order[i+1]][order[i]][0] = Record[order[i]][order[i+1]][0]; 
+				sum2+=Record[order[i]][order[i+1]][0];
 		}
 		Record[order[num-1]][order[0]][0] = Math.sqrt(Math.pow((xy[order[num-1]][0]-xy[order[0]][0]),2) + Math.pow((xy[order[num-1]][1]-xy[order[0]][1]),2));
 		sum2+=Record[order[num-1]][order[0]][0];
