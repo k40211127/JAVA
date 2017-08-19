@@ -42,11 +42,17 @@ public class Read_Random_Order_Summ {
 		double Record[][][] = new double[num][num][1]; //三維陣列 用作紀錄(Step1.完成 Step2.待續)
 		double sum2=0.0;
 		for (int i=0;i<xy.length-1;i++){
+			if(Record[order[i]][order[i+1]][0] ==0 || Record[order[i+1]][order[i]][0] ==0){
 				Record[order[i]][order[i+1]][0] = Math.sqrt(Math.pow((xy[order[i]][0]-xy[order[i+1]][0]),2) + Math.pow((xy[order[i]][1]-xy[order[i+1]][1]),2));
 				Record[order[i+1]][order[i]][0] = Record[order[i]][order[i+1]][0]; 
 				sum2+=Record[order[i]][order[i+1]][0];
+			}
+			else{
+				sum2+=Record[order[i]][order[i+1]][0];
+			}	
 		}
 		Record[order[num-1]][order[0]][0] = Math.sqrt(Math.pow((xy[order[num-1]][0]-xy[order[0]][0]),2) + Math.pow((xy[order[num-1]][1]-xy[order[0]][1]),2));
+		Record[0][order[order[num-1]]][0] = Record[order[num-1]][order[0]][0];
 		sum2+=Record[order[num-1]][order[0]][0];
 		System.out.println("距離總和："+sum2); //這邊的結果與下面的結果是一樣的接下來要做第二步
 		//第二步是 一個IF 包住上面運算 內有for(int i=0;i<xy.length-1;i++)
