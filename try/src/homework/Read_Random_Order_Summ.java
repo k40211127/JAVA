@@ -23,6 +23,8 @@ public class Read_Random_Order_Summ {
 		fr.close();//關閉讀檔
 		br.close();//關閉暫存讀檔
 
+	double Record[][][] = new double[num][num][1]; 	
+	for (int ii=0;ii<50000;ii++){
 		
 		Random ran = new Random();       	//宣告亂數
 		int ran_num;				//接收亂數產生的值
@@ -38,8 +40,8 @@ public class Read_Random_Order_Summ {
 				num1[j] = num1[j+1];//每取走一筆 將後面每一筆往前挪1格
 			}
 		}
-		
-		double Record[][][] = new double[num][num][1]; //三維陣列 用作紀錄(Step1.完成 Step2.待續)
+		//把下面這行 放到外層 for迴圈上面 (一次執行)
+		//double Record[][][] = new double[num][num][1]; //三維陣列 用作紀錄(Step1.完成 Step2.待續)
 		double sum2=0.0;
 		for (int i=0;i<xy.length-1;i++){
 			if(Record[order[i]][order[i+1]][0] ==0 || Record[order[i+1]][order[i]][0] ==0){
@@ -57,7 +59,7 @@ public class Read_Random_Order_Summ {
 		System.out.println("距離總和："+sum2); //這邊的結果與下面的結果是一樣的接下來要做第二步
 		//第二步是 一個IF 包住上面運算 內有for(int i=0;i<xy.length-1;i++)
 		//再一個IF判斷Record[i][i+1][0]是否!=0 是就直接sum2+=Record[i][i+1][0]; 否就在記錄進去,這樣之後重複都會直接+而不會重複運算;
-		
+	}
 		double sum=0.0;
 			for (int i=0;i<xy.length-1;i++){ //兩點距離公式；根號( ( (x1-x2)平方)+(y1-y2)平方) )
 				sum += Math.sqrt(Math.pow((xy[order[i]][0]-xy[order[i+1]][0]),2) + Math.pow((xy[order[i]][1]-xy[order[i+1]][1]),2));
