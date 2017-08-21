@@ -24,7 +24,7 @@ public class Read_Random_Order_Summ {
 		br.close();//關閉暫存讀檔
 
 	double Record[][][] = new double[num][num][1]; 	
-	for (int ii=0;ii<50000;ii++){
+	for (int ii=0;ii<50000;ii++){ //一次執行5萬次(10筆) 約2秒多
 		
 		Random ran = new Random();       	//宣告亂數
 		int ran_num;				//接收亂數產生的值
