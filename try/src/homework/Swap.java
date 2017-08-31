@@ -3,8 +3,8 @@ package homework;
 import java.util.Random;
 
 public class Swap {	
-	public static void main(int[] num) {	
-
+	public static void main(String[] args) {	
+	
 	}
 	public Swap(int[] num) {
 	
