@@ -26,55 +26,59 @@ public class Read_Random_Order_Sum {
 	double Record[][][] = new double[num][num][1]; 	
 	for (int ii=0;ii<2;ii++){ //一次執行5萬次(10筆) 約2秒多
 		
-		//Random ran = new Random();       	//宣告亂數
-		//int ran_num;				//接收亂數產生的值
-		//int [] num1 = new int[num];		//陣列0~9筆(練習檔第一筆)
-		//for (int i=0;i<num;i++){num1[i]=i;}	//賦予第一個num1[0~9]陣列0~9的數值
-		//int [] order = new int[num];		//宣告第二個用作記錄順序的陣列
-		int[] order = {0,6,12,8,4,2,9,14,13,1,10,3,15,5,11,7};
-		Swap.main(order);
-		//System.out.print("隨機順序：");
-		
-		/*for (int i=0;i<order.length;i++){	//共執行10次(筆)
+		Random ran = new Random();       	//宣告亂數
+		int ran_num;				//接收亂數產生的值
+		int [] num1 = new int[num];		//陣列0~9筆(練習檔第一筆)
+		for (int i=0;i<num;i++){num1[i]=i;}	//賦予第一個num1[0~9]陣列0~9的數值
+		int [] order = new int[num];		//宣告第二個用作記錄順序的陣列
+			
+		//System.out.print("隨機序：");		
+		for (int i=0;i<order.length;i++){	//共執行10次(筆)
 			ran_num= ran.nextInt(num-i);	//亂數-i 是因為 假設一開始0~9(亂數範圍) 每取走1個值範圍就減少1筆(0~8)..(0~7)..類推
 			order[i]=num1[ran_num];		//將num1[ran_num]內的值取走 給order[0]..1..2類推
-			System.out.print(order[i]+" "); //觀看順序
+			//System.out.print(order[i]+" "); //觀看順序
 			for (int j=ran_num;j<order.length-i-1;j++){
 				num1[j] = num1[j+1];//每取走一筆 將後面每一筆往前挪1格
 			}
-		}*/
+		}
+		//int[] order = {0,3,2,1,4,5};
 		
-				
-		//把下面這行 放到外層 for迴圈上面 (一次執行)
-		//double Record[][][] = new double[num][num][1]; //三維陣列 用作紀錄(Step1.完成 Step2.待續)
+		System.out.print("原序列：");	for (int i=0;i<order.length;i++) {System.out.print(order[i]+" ");}System.out.println();		
+		Max(num,xy,order,Record);
+		Swap swap = new Swap(order);
+		Max(num,xy,order,Record);
+		System.out.println();
+		
+	}
+	}
+	
+	private static void Max(int num, double[][] xy, int[] order, double[][][] record) {
 		double sum2=0.0;
 		for (int i=0;i<xy.length-1;i++){
-			if(Record[order[i]][order[i+1]][0] ==0 || Record[order[i+1]][order[i]][0] ==0){
-				Record[order[i]][order[i+1]][0] = Math.sqrt(Math.pow(xy[order[i]][1]-xy[order[i+1]][1],2) + Math.pow(xy[order[i]][2]-xy[order[i+1]][2],2));
-				Record[order[i+1]][order[i]][0] = Record[order[i]][order[i+1]][0]; 
-				sum2+=Record[order[i]][order[i+1]][0];
+			if(record[order[i]][order[i+1]][0] ==0 || record[order[i+1]][order[i]][0] ==0){
+				record[order[i]][order[i+1]][0] = Math.sqrt(Math.pow(xy[order[i]][1]-xy[order[i+1]][1],2) + Math.pow(xy[order[i]][2]-xy[order[i+1]][2],2));
+				record[order[i+1]][order[i]][0] = record[order[i]][order[i+1]][0]; 
+				sum2+=record[order[i]][order[i+1]][0];
 				//System.out.println("第"+i+"點距離："+Record[order[i]][order[i+1]][0]);
 			}
 			else{
-				sum2+=Record[order[i]][order[i+1]][0];
+				sum2+=record[order[i]][order[i+1]][0];
 				//System.out.println("第"+i+"點距離："+Record[order[i]][order[i+1]][0]);
 			}	
 		}
-		Record[order[num-1]][order[0]][0] = Math.sqrt(Math.pow(xy[order[num-1]][1]-xy[order[0]][1],2) + Math.pow(xy[order[num-1]][2]-xy[order[0]][2],2));
-		Record[0][order[order[num-1]]][0] = Record[order[num-1]][order[0]][0];
-		sum2+=Record[order[num-1]][order[0]][0];
+		record[order[num-1]][order[0]][0] = Math.sqrt(Math.pow(xy[order[num-1]][1]-xy[order[0]][1],2) + Math.pow(xy[order[num-1]][2]-xy[order[0]][2],2));
+		record[0][order[order[num-1]]][0] = record[order[num-1]][order[0]][0];
+		sum2+=record[order[num-1]][order[0]][0];
 		//System.out.println("最後點距離："+Record[order[num-1]][order[0]][0]);
-		System.out.println("距離總和："+sum2); //這邊的結果與下面的結果是一樣的接下來要做第二步
+		System.out.println("距離和："+sum2); //這邊的結果與下面的結果是一樣的接下來要做第二步
 	}
-		//System.out.println(Math.sqrt(Math.pow(xy[0][0]-xy[6][1],2)+Math.pow(xy[0][1]-xy[6][0],2)));
 
-		//  Math.sqrt(36); 根號		//  Math.pow(2,2); a的b次方
-		
-		//  一. 讀檔； 10筆資料(練習檔)、
-		//  二. 順序； 隨機點(原點)與下一個隨機連接點(類推)
-		//  三. 總和；一直到10個座標都連完1次, 接著在,連回第一個隨機點(原點).
-		//  四. 重複運算；第一次執行時判斷三維陣列那格是否為空，若為空先做運算後加入三維陣列指定格內，
-		//		 若三維陣列內有值(表示已經運算過且已放入陣列內)，則直接加入sum裡面。
-                          
-	}
+	//  Math.sqrt(36); 根號		//  Math.pow(2,2); a的b次方
+	
+	//  一. 讀檔； 10筆資料(練習檔)、
+	//  二. 順序； 隨機點(原點)與下一個隨機連接點(類推)
+	//  三. 總和；一直到10個座標都連完1次, 接著在,連回第一個隨機點(原點).
+	//  四. 重複運算；第一次執行時判斷三維陣列那格是否為空，若為空先做運算後加入三維陣列指定格內，
+	//		 若三維陣列內有值(表示已經運算過且已放入陣列內)，則直接加入sum裡面。
+        //  五. 匯入外部java方法(Swap) 以not-static方法呼叫 
 }
