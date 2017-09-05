@@ -3,11 +3,9 @@ package homework;
 import java.util.Random;
 
 public class Swap {	
-	public static void main(String[] args) {	
-	
-	}
-	public Swap(int[] num) {
-	
+
+	public Swap(int[] num) {//建構子
+	//可以定義無參數的建構方法，或具有參數的建構方法，程式在運行時，會根據配置物件時所指定的引數資料型態等來決定，該使用哪一個建構方法。
 		Random ran = new Random();    int ran_num;	int [] num1 = new int[num.length];	for (int i=0;i<num.length;i++){num1[i]=i;}
 		int [] order = new int[num.length];	  //宣告第二個用作記錄順序的陣列 
 		
