@@ -1,19 +1,16 @@
 package SCF;
-import java.awt.Label;
-import java.io.*;
+
 import java.util.Random;
 
-import homework.Swap;
 public class SCF {
-	
 	public SCF(int[] Parent1,int[] Parent2){
 		
 		int Parent3[]=new int[9];
-		
 		System.out.print("Parent3：");
 		for (int i=0;i<9;i++) {
-			if(Parent1[i] == Parent2[i]) {Parent3[i]=Parent1[i];}else {Parent3[i]=9;}
-			System.out.print(Parent3[i]+" ");
+			if(Parent1[i] == Parent2[i]) {Parent3[i]=Parent1[i];}else {Parent3[i]=-1;}
+			if(Parent3[i] == -1) {System.out.print("\t");}
+			else {System.out.print(Parent3[i]+"\t");}
 		}
 		
 		Random ran = new Random(); int ran_num;	int [] num1 = new int[Parent2.length];	for (int i=0;i<num1.length;i++){num1[i]=i;}
@@ -29,11 +26,13 @@ public class SCF {
 		if (select[0] > select[1]) {int temp1 = select[0]; select[0]=select[1]; select[1]=temp1;}
 		System.out.println("選取格：" + select[0] + " " + select[1]);
 		
-		for (int i=select[0];i<=select[1];i++) {
-			Parent3[i] = Parent1[i];
-		}
+		for (int i=select[0];i<=select[1];i++) {Parent3[i] = Parent1[i];}
+		
 		System.out.print("Parent3：");
-		for (int i=0;i<9;i++) {	System.out.print(Parent3[i]+" ");}	
+		for (int i=0;i<9;i++) {
+			if(Parent3[i] == -1) {System.out.print("\t");}
+			else {System.out.print(Parent3[i]+"\t");}
+		}
 		
 		String str="";
 		for (int i=0;i<9;i++) {
@@ -50,12 +49,12 @@ public class SCF {
 		bf = str.split(" ");  
 		for (int i=0;i<bf.length;i++) {
 			for (int j=0;j<Parent3.length;j++) {
-				if (Parent3[j] == 9) {Parent3[j] = Integer.parseInt(bf[i]);break;}
+				if (Parent3[j] == -1) {Parent3[j] = Integer.parseInt(bf[i]);break;}
 			}
 		}System.out.println();
 		
 		System.out.print("Parent3：");
-		for (int i=0;i<9;i++) {	System.out.print(Parent3[i]+" ");}	System.out.println();
-
+		for (int i=0;i<9;i++) {	System.out.print(Parent3[i]+"\t");}	System.out.println();
+			
 	}	
 }
