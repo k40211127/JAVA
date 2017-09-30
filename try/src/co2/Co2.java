@@ -9,179 +9,146 @@ import javax.xml.crypto.Data;
 public class Co2 {
 	public static void main(String[] args) throws ParseException {		 
 		SimpleDateFormat Time = new SimpleDateFormat("HH:mm");
-		int count = 120,h,m,time,H,M;
-		int[] Process = {50,20,80,60,50,65,89,62,40,65,89,77,91,54,69,71,26,12,80,90,21,40,18,1,1,80,80,80,80};
 		
-		Date h3 = Time.parse("03:00"),h6 = Time.parse("06:00"),h12 = Time.parse("12:00"),
-			 h14 = Time.parse("14:00"),h17 = Time.parse("17:00"),h18 = Time.parse("18:00"),
-			 h21 = Time.parse("21:00"),h23 = Time.parse("23:00"),h24 = Time.parse("24:00");
-			//   0~3   3~6  6~12 12~14 14~17
-			// 23~24 21~23 18~21 17~18
-			// 0.725 0.700 0.693 0.682 0.669
-		String hh = "";
+		int[] Process = {16,35,79,30,96,14,87,85,61,30,35,79,30,96,14,87,85,61,30,35,79,30,96,14,87,85,61,30,35,79,30,96,14,87,85,61,30,35,79,30,96,14,87,85,61,30,30,30,30};
+		int[] Period = new int[3];
+		for (int i=0;i<Process.length;i++) {Period[0] +=Process[i];}
+		int[] Power = {20,30,15};
+		
+		double startTime = (double) Time.parse("02:00").getTime() / (1000*60);
+		double startTime2 =startTime; 
+		double Co2kg = 0,Co2kw=0,totalCo2kg=0,totalCo2kw=0,totalCo2kWh=0;
+	    
+		double h3 = Time.parse("03:00").getTime()/(1000*60),h6 = Time.parse("06:00").getTime()/(1000*60),h12 = Time.parse("03:00").getTime()/(1000*60);
+		double h14 = Time.parse("14:00").getTime()/(1000*60),h17 = Time.parse("17:00").getTime()/(1000*60),h18 = Time.parse("18:00").getTime()/(1000*60);
+		double h21 = Time.parse("21:00").getTime()/(1000*60),h23 = Time.parse("23:00").getTime()/(1000*60),h24 = Time.parse("24:00").getTime()/(1000*60);
+		//   0~3   3~6  6~12 12~14 14~17
+		// 23~24 21~23 18~21 17~18
+		// 0.725 0.700 0.693 0.682 0.669
 		for (int i=0;i<Process.length;i++) {
-			time = count;H=time/60;M=time%60;
-			count +=Process[i]; h=count/60; m=count%60;
-			hh += h+" ";
-			if (h >= 24 || H >=24) {while(h>=24) {h-=24;} while(H>=24) {H-=24;}hh += h+" ";}
-			Date startTime = Time.parse(H+":"+M);//System.out.println(Time.format(startTime));
-			Date endTime  = Time.parse(h+":"+m); //System.out.println(Time.format(endTime));
-			
-			
-			
-			double sum =0;
-			switch (H) {
-			case 0:case 1:case 2:
-				if (startTime.before(h3) && endTime.before(h3) || endTime.equals(h3)) {
-					System.out.println(Time.format(startTime)+" to "+Time.format(endTime)+" S");	break;}
-				switch (h) {
-					case 3:case 4:case 5:case 6:
-						if (startTime.before(h3) && endTime.before(h6) || endTime.equals(h6)) {
-							System.out.println(Time.format(startTime)+" to 03:00 S, 03:00 to "+Time.format(endTime)+" A");	break;}
-					case 7:case 8:case 9:case 10:case 11:
-						if (startTime.before(h3) && endTime.before(h12) || endTime.equals(h12)) {
-							System.out.println(Time.format(startTime)+" to 03:00 S, 03:00 to 06:00 A, 06:00 to "+Time.format(endTime)+" B");	break;}
-					case 12:case 13:
-						if (startTime.before(h3) && endTime.before(h14) || endTime.equals(h14)) {
-							System.out.println(Time.format(startTime)+" to 03:00 S, 03:00 to 06:00 A, 06:00 to 12:00 B, 12:00 to "+Time.format(endTime)+" C");	break;}
-					case 14:case 15:case 16:
-						if (startTime.before(h3) && endTime.before(h17) || endTime.equals(h17)) {
-							System.out.println(Time.format(startTime)+" to 03:00 S, 03:00 to 06:00 A, 06:00 to 12:00 B, 12:00 to 14:00 C, 14:00 to "+Time.format(endTime)+" D");	break;}
-					case 17:
-						if (startTime.before(h3) && endTime.before(h18) || endTime.equals(h18)) {
-							System.out.println(Time.format(startTime)+" to 03:00 S, 03:00 to 06:00 A, 06:00 to 12:00 B, 12:00 to 14:00 C, 14:00 to 17:00 D, 17:00 to "+Time.format(endTime)+" C");	break;}
-					case 18:case 19:case 20:
-						if (startTime.before(h3) && endTime.before(h21) || endTime.equals(h21)) {
-							System.out.println(Time.format(startTime)+" to 03:00 S, 03:00 to 06:00 A, 06:00 to 12:00 B, 12:00 to 14:00 C, 14:00 to 17:00 D, 17:00 to 18:00 C, 18:00 to "+Time.format(endTime)+" B");	break;}
-					case 21:case 22:
-						if (startTime.before(h3) && endTime.before(h23) || endTime.equals(h23)) {
-							System.out.println(Time.format(startTime)+" to 03:00 S, 03:00 to 06:00 A, 06:00 to 12:00 B, 12:00 to 14:00 C, 14:00 to 17:00 D, 17:00 to 18:00 C, 18:00 to 21:00 B, 21:00 to "+Time.format(endTime)+" A");	break;}
-					case 23:
-						if (startTime.before(h3) && endTime.before(h24) || endTime.equals(h24)) {
-							System.out.println(Time.format(startTime)+" to 03:00 S, 03:00 to 06:00 A, 06:00 to 12:00 B, 12:00 to 14:00 C, 14:00 to 17:00 D, 17:00 to 18:00 C, 18:00 to 21:00 B, 21:00 to 23:00 A, 23:00 to "+Time.format(endTime)+" S");	break;}
-				}break;
-			case 3:case 4:case 5:
-				if (startTime.before(h6) && endTime.before(h6) || endTime.equals(h6)) {
-					System.out.println(Time.format(startTime)+" to "+Time.format(endTime)+" A");	break;}
-				switch (h) {	
-					case 6:case 7:case 8:case 9:case 10:case 11:
-						if (startTime.before(h6) && endTime.before(h12) || endTime.equals(h12)) {
-							System.out.println(Time.format(startTime)+" to 06:00 A, 06:00 to "+Time.format(endTime)+" B");	break;}
-					case 12:case 13:
-						if (startTime.before(h6) && endTime.before(h14) || endTime.equals(h14)) {
-							System.out.println(Time.format(startTime)+" to 06:00 A, 06:00 to 12:00 B, 12:00 to "+Time.format(endTime)+" C");	break;}
-					case 14:case 15:case 16:
-						if (startTime.before(h6) && endTime.before(h17) || endTime.equals(h17)) {
-							System.out.println(Time.format(startTime)+" to 06:00 A, 06:00 to 12:00 B, 12:00 to 14:00 C, 14:00 to "+Time.format(endTime)+" D");	break;}
-					case 17:
-						if (startTime.before(h6) && endTime.before(h18) || endTime.equals(h18)) {
-							System.out.println(Time.format(startTime)+" to 06:00 A, 06:00 to 12:00 B, 12:00 to 14:00 C, 14:00 to 17:00 D, 17:00 to "+Time.format(endTime)+" C");	break;}
-					case 18:case 19:case 20:
-						if (startTime.before(h6) && endTime.before(h21) || endTime.equals(h21)) {
-							System.out.println(Time.format(startTime)+" to 06:00 A, 06:00 to 12:00 B, 12:00 to 14:00 C, 14:00 to 17:00 D, 17:00 to 18:00 C, 18:00 to "+Time.format(endTime)+" B");	break;}
-					case 21:case 22:
-						if (startTime.before(h6) && endTime.before(h23) || endTime.equals(h23)) {
-							System.out.println(Time.format(startTime)+" to 06:00 A, 06:00 to 12:00 B, 12:00 to 14:00 C, 14:00 to 17:00 D, 17:00 to 18:00 C, 18:00 to 21:00 B, 21:00 to "+Time.format(endTime)+" A");	break;}	
-					case 23:
-						if (startTime.before(h6) && endTime.before(h24) || endTime.equals(h24)) {
-							System.out.println(Time.format(startTime)+" to 06:00 A, 06:00 to 12:00 B, 12:00 to 14:00 C, 14:00 to 17:00 D, 17:00 to 18:00 C, 18:00 to 21:00 B, 21:00 to 23:00 A, 23:00 to "+Time.format(endTime)+" S");	break;}
-				}break;
-			case 6:case 7:case 8:case 9:case 10:case 11:
-				if (startTime.before(h12) && endTime.before(h12) || endTime.equals(h12)) { 
-					System.out.println(Time.format(startTime)+" to "+Time.format(endTime)+" B");	break;}
-				switch (h) {
-				case 12:case 13:
-					if (startTime.before(h12) && endTime.before(h14) || endTime.equals(h14)) {
-						System.out.println(Time.format(startTime)+" to 12:00 B, 12:00 to "+Time.format(endTime)+" C");	break;}
-				case 14:case 15:case 16:
-					if (startTime.before(h12) && endTime.before(h17) || endTime.equals(h17)) {
-						System.out.println(Time.format(startTime)+" to 12:00 B, 12:00 to 14:00 C, 14:00 to "+Time.format(endTime)+" D");	break;}
-				case 17:
-					if (startTime.before(h12) && endTime.before(h18) || endTime.equals(h18)) {
-						System.out.println(Time.format(startTime)+" to 12:00 B, 12:00 to 14:00 C, 14:00 to 17:00 D, 17:00 to "+Time.format(endTime)+" C");	break;}
-				case 18:case 19:case 20:
-					if (startTime.before(h12) && endTime.before(h21) || endTime.equals(h21)) {
-						System.out.println(Time.format(startTime)+" to 12:00 B, 12:00 to 14:00 C, 14:00 to 17:00 D, 17:00 to 18:00 C, 18:00 to "+Time.format(endTime)+" B");	break;}
-				case 21:case 22:
-					if (startTime.before(h12) && endTime.before(h23) || endTime.equals(h23)) {
-						System.out.println(Time.format(startTime)+" to 12:00 B, 12:00 to 14:00 C, 14:00 to 17:00 D, 17:00 to 18:00 C, 18:00 to 21:00 B, 21:00 to "+Time.format(endTime)+" A");	break;}
-				case 23:
-					if (startTime.before(h12) && endTime.before(h24) || endTime.equals(h24)) {
-						System.out.println(Time.format(startTime)+" to 12:00 B, 12:00 to 14:00 C, 14:00 to 17:00 D, 17:00 to 18:00 C, 18:00 to 21:00 B, 21:00 to 23:00 A, 23:00 to "+Time.format(endTime)+" S");	break;}
-				}break;
-			case 12:case 13:
-				if (startTime.before(h14) && endTime.before(h14) || endTime.equals(h14)) {
-					System.out.println(Time.format(startTime)+" to "+Time.format(endTime)+" C");	break;}
-				switch (h) {			
-					case 14:case 15:case 16:
-						if (startTime.before(h14) && endTime.before(h17) || endTime.equals(h17)) {
-							System.out.println(Time.format(startTime)+" to 14:00 C, 14:00 to "+Time.format(endTime)+" D");	break;}
-					case 17:
-						if (startTime.before(h14) && endTime.before(h18) || endTime.equals(h18)) {
-							System.out.println(Time.format(startTime)+" to 14:00 C, 14:00 to 17:00 D, 17:00 to "+Time.format(endTime)+" C");	break;}
-					case 18:case 19:case 20:
-						if (startTime.before(h14) && endTime.before(h21) || endTime.equals(h21)) {
-							System.out.println(Time.format(startTime)+" to 14:00 C, 14:00 to 17:00 D, 17:00 to 18:00 C, 18:00 to "+Time.format(endTime)+" B");	break;}
-					case 21:case 22:
-						if (startTime.before(h14) && endTime.before(h23) || endTime.equals(h23)) {
-							System.out.println(Time.format(startTime)+" to 14:00 C, 14:00 to 17:00 D, 17:00 to 18:00 C, 18:00 to 21:00 B, 21:00 to "+Time.format(endTime)+" A");	break;}
-					case 23:
-						if (startTime.before(h14) && endTime.before(h24) || endTime.equals(h24)) {
-							System.out.println(Time.format(startTime)+" to 14:00 C, 14:00 to 17:00 D, 17:00 to 18:00 C, 18:00 to 21:00 B, 21:00 to 23:00 A, 23:00 to "+Time.format(endTime)+" S");	break;}
-				}break;
-			case 14:case 15:case 16:	
-				if (startTime.before(h17) && endTime.before(h17) || endTime.equals(h17)) {
-					System.out.println(Time.format(startTime)+" to "+Time.format(endTime)+" D");	break;}
-				switch (h) {	
-					case 17:
-						if (startTime.before(h17) && endTime.before(h18) || endTime.equals(h18)) {
-							System.out.println(Time.format(startTime)+" to 17:00 D, 17:00 to "+Time.format(endTime)+" C");	break;}
-					case 18:case 19:case 20:
-						if (startTime.before(h17) && endTime.before(h21) || endTime.equals(h21)) {
-							System.out.println(Time.format(startTime)+" to 17:00 D, 17:00 to 18:00 C, 18:00 to "+Time.format(endTime)+" B");	break;}
-					case 21:case 22:
-						if (startTime.before(h17) && endTime.before(h23) || endTime.equals(h23)) {
-							System.out.println(Time.format(startTime)+" to 17:00 D, 17:00 to 18:00 C, 18:00 to 21:00 B, 21:00 to "+Time.format(endTime)+" A");	break;}
-					case 23:
-						if (startTime.before(h17) && endTime.before(h24) || endTime.equals(h24)) {
-							System.out.println(Time.format(startTime)+" to 17:00 D, 17:00 to 18:00 C, 18:00 to 21:00 B, 21:00 to 23:00 A, 23:00 to "+Time.format(endTime)+" S");	break;}
-				}break;	
-			case 17:
-				if (startTime.before(h18) && endTime.before(h18) || endTime.equals(h18)) {
-					System.out.println(Time.format(startTime)+" to "+Time.format(endTime)+" C");	break;}
-				switch (h) {
-				case 18:case 19:case 20:
-					if (startTime.before(h18) && endTime.before(h21) || endTime.equals(h21)) {
-						System.out.println(Time.format(startTime)+" to 18:00 C, 18:00 to "+Time.format(endTime)+" B");	break;}
-				case 21:case 22:
-					if (startTime.before(h18) && endTime.before(h23) || endTime.equals(h23)) {
-						System.out.println(Time.format(startTime)+" to 18:00 C, 18:00 to 21:00 B, 21:00 to "+Time.format(endTime)+" A");	break;}
-				case 23:
-					if (startTime.before(h18) && endTime.before(h24) || endTime.equals(h24)) {
-						System.out.println(Time.format(startTime)+" to 18:00 C, 18:00 to 21:00 B, 21:00 to 23:00 A, 23:00 to "+Time.format(endTime)+" S");	break;}
-				}break;
-			case 18:case 19:case 20:
-				if (startTime.before(h21) && endTime.before(h21) || endTime.equals(h21)) {
-					System.out.println(Time.format(startTime)+" to "+Time.format(endTime)+" B");	break;}
-				switch (h) {		
-					case 21:case 22:
-						if (startTime.before(h21) && endTime.before(h23) || endTime.equals(h23)) {
-							System.out.println(Time.format(startTime)+" to 21:00 B, 21:00 to "+Time.format(endTime)+" A");	break;}
-					case 23:
-						if (startTime.before(h21) && endTime.before(h24) || endTime.equals(h24)) {
-							System.out.println(Time.format(startTime)+" to 21:00 B, 21:00 to 23:00 A, 23:00 to "+Time.format(endTime)+" S");	break;}
-				}break;
-			case 21:case 22:
-				if (startTime.before(h23) && endTime.before(h23) || endTime.equals(h23)) {
-					System.out.println(Time.format(startTime)+" to "+Time.format(endTime)+" A");	break;}
-				if (startTime.before(h23) && endTime.before(h24) || endTime.equals(h24)) {
-					System.out.println(Time.format(startTime)+" to 23:00 A, 23:00 to "+Time.format(endTime)+" S");	break;}
-			case 23:
-				if (startTime.before(h24) && endTime.before(h24) || endTime.equals(h24)) {
-					System.out.println(Time.format(startTime)+" to "+Time.format(endTime)+ " S");	break;}
-			}
+			System.out.print("startTime : "+startTime+"\t"+Time.format(startTime*60000)+"\t");
+			double endTime = (double) startTime + Process[i]; System.out.print((endTime-startTime)+"\t"+Time.format(endTime*60000)+"\t");
+				if (startTime < h3) { // 00:00~03:00  0.725 
+					if (endTime > h3) {
+						Co2kg = (h3-startTime) /60*0.725; totalCo2kg += Co2kg;
+						Co2kw = (h3-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h3;
+					}else {
+						Co2kg = (endTime-startTime) /60*0.725; totalCo2kg += Co2kg;
+						Co2kw = (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+					}
+				}
+				if (startTime >=h3 && startTime < h6) { // 03:00~06:00  0.700
+					if (endTime > h6) {
+						Co2kg = (h6-startTime) /60*0.700;	totalCo2kg += Co2kg;
+						Co2kw = (h6-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h6;
+					}else {
+						Co2kg = (endTime -startTime) /60*0.700; totalCo2kg += Co2kg;
+						Co2kw = (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+					}
+				}
+				if (startTime >=h6 && startTime < h12) { // 06:00~12:00 0.693
+					if (endTime > h12) {
+						Co2kg = (h12-startTime)/60*0.693; totalCo2kg += Co2kg;
+						Co2kw = (h12-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h12;
+					}else {
+						Co2kg = (endTime-startTime)/60*0.693; totalCo2kg += Co2kg;
+						Co2kw = (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+					}
+				}
+				if (startTime >=h12 && startTime <h14) { // 12:00~14:00 0.682
+					if (endTime > h14) {
+						Co2kg = (h14-startTime)/60*0.682; totalCo2kg += Co2kg;
+						Co2kw = (h14-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h14;
+					}else {
+						Co2kg = (endTime-startTime)/60*0.682; totalCo2kg += Co2kg;
+						Co2kw = (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+					}
+				}
+				if (startTime >=h14 && startTime <h17) { // 14:00~17:00 0.669
+					if (endTime > h17) {
+						Co2kg = (h17-startTime)/60*0.669; totalCo2kg += Co2kg;
+						Co2kw = (h17-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h17;
+					}else {
+						Co2kg = (endTime-startTime)/60*0.669; totalCo2kg += Co2kg;
+						Co2kw = (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+					}
+				}
+				if (startTime >=h17 && startTime <h18) { // 12:00~14:00 0.682
+					if (endTime > h18) {
+						Co2kg = (h18-startTime)/60*0.682; totalCo2kg += Co2kg;
+						Co2kw = (h18-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h18;
+					}else {
+						Co2kg = (endTime-startTime)/60*0.682; totalCo2kg += Co2kg;
+						Co2kw = (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+					}
+				}
+				if (startTime >=h18 && startTime <h21) { // 12:00~14:00 0.693
+					if (endTime > h21) {
+						Co2kg = (h21-startTime)/60*0.693; totalCo2kg += Co2kg;
+						Co2kw = (h21-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h21;
+					}else {
+						Co2kg = (endTime-startTime)/60*0.693; totalCo2kg += Co2kg;
+						Co2kw = (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+					}
+				}
+				if (startTime >=h21 && startTime <h23) { // 12:00~14:00 0.700
+					if (endTime > h23) {
+						Co2kg = (h23-startTime)/60*0.700; totalCo2kg += Co2kg;
+						Co2kw = (h23-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h23;
+					}else {
+						Co2kg = (endTime-h21)/60*0.700; totalCo2kg += Co2kg;
+						Co2kw = (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+					}
+				}
+				if (startTime >=h23 && startTime <h24) { // 12:00~14:00 0.725
+					if (endTime >h24) {
+						Co2kg = (h24-startTime)/60*0.725; totalCo2kg += Co2kg;
+						Co2kw = (h24-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h24;
+					}else {
+						Co2kg = (endTime-startTime)/60*0.725;	totalCo2kg += Co2kg;
+						Co2kw = (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+					}
+				}
+				if (endTime > h24) {
+					startTime-=1320;endTime-=1320;
+					if (endTime>h3) {
+						//;
+					}else {
+						Co2kg += (endTime-startTime2)/60*0.725; totalCo2kg += Co2kg;
+						Co2kw += (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+					}
+				}
+				startTime = endTime;
+				System.out.println(Math.rint(Co2kg*1000)/1000+"\t"+Math.rint(Co2kw*1000)/1000);
 		}
-			//float mm = 40f/100f;
-			//System.out.println(Math.rint((mm*100)/100));
+		System.out.print("\n"+"totalCo2kg: "+Math.rint(totalCo2kg*1000)/1000+"\t"+"totalCo2kw: "+ Math.rint(totalCo2kw*1000)/1000+"\t"+"totalCo2kWh: "+ Math.rint(totalCo2kWh*1000)/1000);
 	}
 }
