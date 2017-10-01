@@ -10,6 +10,15 @@ public class test2 {
 	public static void main(String[] args) throws ParseException {		 
 		SimpleDateFormat Time = new SimpleDateFormat("HH:mm");
 		
+		
+		/* 寫一新java檔案,Call_Co2
+		 * 讀檔,寫入Process[][];
+		 * 寫一Period[],Power[];
+		 * 呼叫這邊方法,再把這邊變成方法檔案.
+		 */
+		
+		
+		
 		int[] Process = {16,35,79,30,96,14,87,85,61,30,35,79,30,96,14,87,85,61,30,35,79,30,96,14,87,85,61,30,35,79,30,96,14,87,85,61,30,35,79,30,96,14,87,85,61,30,30,30,30};
 		int[] Period = new int[3];
 		for (int i=0;i<Process.length;i++) {Period[0] +=Process[i];}
@@ -128,26 +137,46 @@ public class test2 {
 						Co2kg = (h24-startTime)/60*0.725; totalCo2kg += Co2kg;
 						Co2kw = (h24-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
 						totalCo2kWh += Co2kg*Co2kw;
-						startTime = h24;
+						startTime = h24; //結束時間大於24:00.getTime值
 					}else {
 						Co2kg = (endTime-startTime)/60*0.725;	totalCo2kg += Co2kg;
 						Co2kw = (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
 						totalCo2kWh += Co2kg*Co2kw;
 					}
 				}
-				if (startTime == h24 && endTime > h24) { //開始換日 
-					startTime-=1320; // startTime = 02:00.getTime值
-					endTime-=1320;   // endTime   = 02:xx.getTime值
-					if (endTime>h3) {
-						Co2kg += (h3-startTime)/60*0.725; totalCo2kg += Co2kg;
-						Co2kw += (h3-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
-						startTime = h3;
-						totalCo2kWh += Co2kg*Co2kw;
-					}else {
-						Co2kg += (endTime-startTime)/60*0.725; totalCo2kg += Co2kg;
-						Co2kw += (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
-						totalCo2kWh += Co2kg*Co2kw;
-					}
+				if (startTime == h24) {  // 開始換日 
+					startTime-=1320;     // startTime = 02:00.getTime值
+					endTime-=1320;       // endTime   = 02:xx.getTime值
+						if (endTime>h3) {// 結束時間>3點,則先計算(3點-開工時間)的值
+							Co2kg += (h3-startTime)/60*0.725; totalCo2kg += Co2kg;
+							Co2kw += (h3-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+							startTime = h3;
+							totalCo2kWh += Co2kg*Co2kw;
+						}else {//若無>3點,則表示結束時間在隔日開工時間的第一個區段內
+							Co2kg += (endTime-startTime)/60*0.725; totalCo2kg += Co2kg;
+							Co2kw += (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+							totalCo2kWh += Co2kg*Co2kw;
+						}
+						if (startTime >=h3 && endTime>h6) { // 結束時間>6點,則先計算(6點-第二區段開始)的值
+							Co2kg += (h6-startTime)/60*0.700; totalCo2kg += Co2kg;
+							Co2kw += (h6-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+							startTime = h6;
+							totalCo2kWh += Co2kg*Co2kw;
+						}else {//若無>6點,則表示結束時間在隔日開工時間第一時間區段+上第二個區段內時間
+							Co2kg += (endTime-startTime)/60*0.700; totalCo2kg += Co2kg;
+							Co2kw += (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+							totalCo2kWh += Co2kg*Co2kw;
+						}
+						if (startTime >=h6 && endTime>h12) {// 結束時間>12點,則先計算(12點-第三區段開始)的值
+							Co2kg += (h12-startTime)/60*0.693; totalCo2kg += Co2kg;
+							Co2kw += (h12-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+							startTime = h12;//這邊的if判斷 先暫時寫三個時間區段
+							totalCo2kWh += Co2kg*Co2kw;
+						}else {//若無>12點,則表示結束時間在隔日開工時間至第一、二時間區段+上第三個區段內時間
+							Co2kg += (endTime-startTime)/60*0.693; totalCo2kg += Co2kg;
+							Co2kw += (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+							totalCo2kWh += Co2kg*Co2kw;
+						}
 				}
 				startTime = endTime;
 				System.out.println(Math.rint(Co2kg*1000)/1000+"\t"+Math.rint(Co2kw*1000)/1000);
