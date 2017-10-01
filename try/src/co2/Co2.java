@@ -6,7 +6,7 @@ import java.util.Date;
 
 import javax.xml.crypto.Data;
 
-public class Co2 {
+public class test2 {
 	public static void main(String[] args) throws ParseException {		 
 		SimpleDateFormat Time = new SimpleDateFormat("HH:mm");
 		
@@ -15,9 +15,8 @@ public class Co2 {
 		for (int i=0;i<Process.length;i++) {Period[0] +=Process[i];}
 		int[] Power = {20,30,15};
 		
-		double startTime = (double) Time.parse("02:00").getTime() / (1000*60);
-		double startTime2 =startTime; 
-		double Co2kg = 0,Co2kw=0,totalCo2kg=0,totalCo2kw=0,totalCo2kWh=0;
+		double startTime = (double) Time.parse("02:00").getTime() / (1000*60); 
+		double Co2kg = 0, Co2kw=0, totalCo2kg=0, totalCo2kw=0, totalCo2kWh=0;
 	    
 		double h3 = Time.parse("03:00").getTime()/(1000*60),h6 = Time.parse("06:00").getTime()/(1000*60),h12 = Time.parse("03:00").getTime()/(1000*60);
 		double h14 = Time.parse("14:00").getTime()/(1000*60),h17 = Time.parse("17:00").getTime()/(1000*60),h18 = Time.parse("18:00").getTime()/(1000*60);
@@ -88,7 +87,7 @@ public class Co2 {
 						totalCo2kWh += Co2kg*Co2kw;
 					}
 				}
-				if (startTime >=h17 && startTime <h18) { // 12:00~14:00 0.682
+				if (startTime >=h17 && startTime <h18) { // 17:00~18:00 0.682
 					if (endTime > h18) {
 						Co2kg = (h18-startTime)/60*0.682; totalCo2kg += Co2kg;
 						Co2kw = (h18-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
@@ -100,7 +99,7 @@ public class Co2 {
 						totalCo2kWh += Co2kg*Co2kw;
 					}
 				}
-				if (startTime >=h18 && startTime <h21) { // 12:00~14:00 0.693
+				if (startTime >=h18 && startTime <h21) { // 18:00~21:00 0.693
 					if (endTime > h21) {
 						Co2kg = (h21-startTime)/60*0.693; totalCo2kg += Co2kg;
 						Co2kw = (h21-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
@@ -112,19 +111,19 @@ public class Co2 {
 						totalCo2kWh += Co2kg*Co2kw;
 					}
 				}
-				if (startTime >=h21 && startTime <h23) { // 12:00~14:00 0.700
+				if (startTime >=h21 && startTime <h23) { // 21:00~23:00 0.700
 					if (endTime > h23) {
 						Co2kg = (h23-startTime)/60*0.700; totalCo2kg += Co2kg;
 						Co2kw = (h23-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
 						totalCo2kWh += Co2kg*Co2kw;
 						startTime = h23;
 					}else {
-						Co2kg = (endTime-h21)/60*0.700; totalCo2kg += Co2kg;
+						Co2kg = (endTime-startTime)/60*0.700; totalCo2kg += Co2kg;
 						Co2kw = (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
 						totalCo2kWh += Co2kg*Co2kw;
 					}
 				}
-				if (startTime >=h23 && startTime <h24) { // 12:00~14:00 0.725
+				if (startTime >=h23 && startTime <h24) { // 23:00~24:00 0.725
 					if (endTime >h24) {
 						Co2kg = (h24-startTime)/60*0.725; totalCo2kg += Co2kg;
 						Co2kw = (h24-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
@@ -136,12 +135,16 @@ public class Co2 {
 						totalCo2kWh += Co2kg*Co2kw;
 					}
 				}
-				if (endTime > h24) {
-					startTime-=1320;endTime-=1320;
+				if (startTime == h24 && endTime > h24) { //開始換日 
+					startTime-=1320; // startTime = 02:00.getTime值
+					endTime-=1320;   // endTime   = 02:xx.getTime值
 					if (endTime>h3) {
-						//;
+						Co2kg += (h3-startTime)/60*0.725; totalCo2kg += Co2kg;
+						Co2kw += (h3-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
+						startTime = h3;
+						totalCo2kWh += Co2kg*Co2kw;
 					}else {
-						Co2kg += (endTime-startTime2)/60*0.725; totalCo2kg += Co2kg;
+						Co2kg += (endTime-startTime)/60*0.725; totalCo2kg += Co2kg;
 						Co2kw += (endTime-startTime)/Period[0]*Power[0]; totalCo2kw += Co2kw;
 						totalCo2kWh += Co2kg*Co2kw;
 					}
