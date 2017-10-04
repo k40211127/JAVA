@@ -1,23 +1,15 @@
 package co2;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.xml.crypto.Data;
 
 public class Co2 {
-	public static void main(String[] args) throws ParseException {		 
+	public Co2 (double[] Period,int[] Power,double startTime) throws ParseException{
 		SimpleDateFormat Time = new SimpleDateFormat("HH:mm");
 		
 		double[] Process = {16,35,79,30,96,14,87,85,61,30};
-		double[] Period = new double[3];
-		for (int i=0;i<Process.length;i++) {Period[0] +=Process[i];}
-		int[] Power = {20,30,15};
+
+		double Co2kg = 0, Co2kw=0, totalCo2kg=0, totalCo2kw=0, totalCo2kWh=0; 
 		
-		double startTime = (double) Time.parse("02:00").getTime() / (1000*60); 
-		double Co2kg = 0, Co2kw=0, totalCo2kg=0, totalCo2kw=0, totalCo2kWh=0;
-	    
 		double h3 = Time.parse("03:00").getTime()/(1000*60),h6 = Time.parse("06:00").getTime()/(1000*60),h12 = Time.parse("12:00").getTime()/(1000*60);
 		double h14 = Time.parse("14:00").getTime()/(1000*60),h17 = Time.parse("17:00").getTime()/(1000*60),h18 = Time.parse("18:00").getTime()/(1000*60);
 		double h21 = Time.parse("21:00").getTime()/(1000*60),h23 = Time.parse("23:00").getTime()/(1000*60),h24 = Time.parse("24:00").getTime()/(1000*60);
