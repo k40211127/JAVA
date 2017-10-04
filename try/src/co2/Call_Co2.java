@@ -3,9 +3,14 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import SCF.SCF;
+import co2.Co2;
 
 public class Call_test {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, Exception {
 		//讀取(練習檔) 位址
 		FileReader fr = new FileReader("src//co2//p10x3_0.txt");
 		BufferedReader br = new BufferedReader(fr); 
@@ -40,7 +45,12 @@ public class Call_test {
 				Period[i] += Process[i][j];
 			}System.out.println(Period[i]);
 		}
+		SimpleDateFormat Time = new SimpleDateFormat("HH:mm");
+		double startTime = Time.parse("02:00").getTime() / (1000*60);
 		
-  //呼叫Co2方法
+		Co2 call_co2 = new Co2(Period,Power,startTime);
+		// 還沒完送Process[][]過去
+		
+
 	}
 }
