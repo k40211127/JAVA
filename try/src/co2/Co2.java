@@ -2,8 +2,8 @@ package co2;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class Te {
-	public Te (double[][] process,double[] Period,int[] Power,double startTime,int many_robo) throws ParseException{
+public class Co2 {
+	public Co2 (double[][] process,double[] Period,int[] Power,double startTime,int many_robo) throws ParseException{
 		SimpleDateFormat Time = new SimpleDateFormat("HH:mm");
 		
 		double Co2kg, Co2kw, totalCo2kg, totalCo2kw, totalCo2kWh, st=startTime; 
