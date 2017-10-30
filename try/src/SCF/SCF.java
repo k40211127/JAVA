@@ -6,7 +6,7 @@ public class SCF {
 	public SCF(int[] Parent1,int[] Parent2){
 		
 		int Parent3[]=new int[9];
-		System.out.print("Parent3ï¼š");
+		System.out.print("Parent3¡G");
 		for (int i=0;i<9;i++) {
 			if(Parent1[i] == Parent2[i]) {Parent3[i]=Parent1[i];}else {Parent3[i]=-1;}
 			if(Parent3[i] == -1) {System.out.print("\t");}
@@ -14,7 +14,7 @@ public class SCF {
 		}
 		
 		Random ran = new Random(); int ran_num;	int [] num1 = new int[Parent2.length];	for (int i=0;i<num1.length;i++){num1[i]=i;}
-		int [] select = new int[Parent3.length];	  //å®£å‘Šç¬¬äºŒå€‹ç”¨ä½œè¨˜éŒ„é †åºçš„é™£åˆ— 
+		int [] select = new int[Parent3.length];	  //«Å§i²Ä¤G­Ó¥Î§@°O¿ı¶¶§Çªº°}¦C 
 		
 		for (int i=0;i<2;i++){	
 			ran_num= ran.nextInt(num1.length-i);	
@@ -24,11 +24,11 @@ public class SCF {
 			}
 		}
 		if (select[0] > select[1]) {int temp1 = select[0]; select[0]=select[1]; select[1]=temp1;}
-		System.out.println("é¸å–æ ¼ï¼š" + select[0] + " " + select[1]);
+		System.out.println("¿ï¨ú®æ¡G" + select[0] + " " + select[1]);
 		
 		for (int i=select[0];i<=select[1];i++) {Parent3[i] = Parent1[i];}
 		
-		System.out.print("Parent3ï¼š");
+		System.out.print("Parent3¡G");
 		for (int i=0;i<9;i++) {
 			if(Parent3[i] == -1) {System.out.print("\t");}
 			else {System.out.print(Parent3[i]+"\t");}
@@ -43,7 +43,7 @@ public class SCF {
 				if (count==9) {str += Parent2[i] +" ";}
 			}
 		}
-		System.out.print("ç¼ºå°‘äº†ï¼š" + str);
+		System.out.print("¯Ê¤Ö¤F¡G" + str);
 		String bf[];
 		
 		bf = str.split(" ");  
@@ -53,7 +53,7 @@ public class SCF {
 			}
 		}System.out.println();
 		
-		System.out.print("Parent3ï¼š");
+		System.out.print("Parent3¡G");
 		for (int i=0;i<9;i++) {	System.out.print(Parent3[i]+"\t");}	System.out.println();
 			
 	}	

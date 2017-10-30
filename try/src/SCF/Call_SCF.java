@@ -9,24 +9,24 @@ public class Call_SCF {
 		int[] Parent1 = new int[9];
 		int[] Parent2 = new int[9];
 		
-		System.out.print("Parent1ï¼š");	Random_gene(Parent1);	System.out.println();
-		System.out.print("Parent2ï¼š");	Random_gene(Parent2);	System.out.println();
+		System.out.print("Parent1¡G");	Random_gene(Parent1);	System.out.println();
+		System.out.print("Parent2¡G");	Random_gene(Parent2);	System.out.println();
 		SCF call_scf = new SCF(Parent1,Parent2);
 	}
 	
 	
 	private static void Random_gene(int Parent[]) {
-		Random ran = new Random();       	 //å®£å‘Šäº‚æ•¸
-		int ran_num;						 //æŽ¥æ”¶äº‚æ•¸ç”¢ç”Ÿçš„å€¼
-		int [] num1 = new int[Parent.length];//é™£åˆ—0~9ç­†(ç·´ç¿’æª”ç¬¬ä¸€ç­†)
+		Random ran = new Random();       	 //«Å§i¶Ã¼Æ
+		int ran_num;						 //±µ¦¬¶Ã¼Æ²£¥Íªº­È
+		int [] num1 = new int[Parent.length];//°}¦C0~9µ§(½m²ßÀÉ²Ä¤@µ§)
 				
-		for (int i=0;i<Parent.length;i++){num1[i]=i;}	//è³¦äºˆç¬¬ä¸€å€‹num1[0~9]é™£åˆ—0~9çš„æ•¸å€¼
-		for (int i=0;i<Parent.length;i++){	 //å…±åŸ·è¡Œ10æ¬¡(ç­†)
-			ran_num= ran.nextInt(Parent.length-i);	    //äº‚æ•¸-i æ˜¯å› ç‚º å‡è¨­ä¸€é–‹å§‹0~9(äº‚æ•¸ç¯„åœ) æ¯å–èµ°1å€‹å€¼ç¯„åœå°±æ¸›å°‘1ç­†(0~8)..(0~7)..é¡žæŽ¨
-			Parent[i]=num1[ran_num];		 //å°‡num1[ran_num]å…§çš„å€¼å–èµ° çµ¦order[0]..1..2é¡žæŽ¨
-			System.out.print(Parent[i]+"\t"); //è§€çœ‹é †åº
+		for (int i=0;i<Parent.length;i++){num1[i]=i;}	//½á¤©²Ä¤@­Ónum1[0~9]°}¦C0~9ªº¼Æ­È
+		for (int i=0;i<Parent.length;i++){	 //¦@°õ¦æ10¦¸(µ§)
+			ran_num= ran.nextInt(Parent.length-i);	    //¶Ã¼Æ-i ¬O¦]¬° °²³]¤@¶}©l0~9(¶Ã¼Æ½d³ò) ¨C¨ú¨«1­Ó­È½d³ò´N´î¤Ö1µ§(0~8)..(0~7)..Ãþ±À
+			Parent[i]=num1[ran_num];		 //±Nnum1[ran_num]¤ºªº­È¨ú¨« µ¹order[0]..1..2Ãþ±À
+			System.out.print(Parent[i]+"\t"); //Æ[¬Ý¶¶§Ç
 			for (int j=ran_num;j<Parent.length-i-1;j++){
-				num1[j] = num1[j+1];		 //æ¯å–èµ°ä¸€ç­† å°‡å¾Œé¢æ¯ä¸€ç­†å¾€å‰æŒª1æ ¼
+				num1[j] = num1[j+1];		 //¨C¨ú¨«¤@µ§ ±N«á­±¨C¤@µ§©¹«e®¿1®æ
 			}
 		}
 	}

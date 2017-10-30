@@ -1,12 +1,32 @@
 package co2;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import co2.Call_Co2;
+
 
 public class Co2 {
-	public Co2 (double[][] process,double[] Period,int[] Power,double startTime,int many_robo) throws ParseException{
+	private double startTime;
+	private double[] Process;
+	private int Power;
+	
+	public static void main(String[] args) throws IOException, Exception  {
+		Co2 a = new Co2();//≥o•˜§Â•Û
+		Call_Co2 b = new Call_Co2();//πjæ¿•˜§Â•Û
+		a.setAll(b.getStartTime(), b.getProcess(), b.getPower());
+		a.evaluateAll();
+	}
+
+	public void setAll(double starttime,double[] Process,int Power) {
+		this.startTime = starttime;
+		this.Process = Process;
+		this.Power = Power;
+	}
+	
+	public void evaluateAll () throws ParseException{
 		SimpleDateFormat Time = new SimpleDateFormat("HH:mm");
 		
-		double Co2kg, Co2kw, totalCo2kg, totalCo2kw, totalCo2kWh, st=startTime; 
+		double Co2kg = 0, Co2kw=0, totalCo2kg=0, totalCo2kw=0, totalCo2kWh=0; 
 		
 		double h3 = Time.parse("03:00").getTime()/(1000*60),h6 = Time.parse("06:00").getTime()/(1000*60),h12 = Time.parse("12:00").getTime()/(1000*60);
 		double h14 = Time.parse("14:00").getTime()/(1000*60),h17 = Time.parse("17:00").getTime()/(1000*60),h18 = Time.parse("18:00").getTime()/(1000*60);
@@ -14,238 +34,238 @@ public class Co2 {
 		//   0~3   3~6  6~12 12~14 14~17
 		// 23~24 21~23 18~21 17~18
 		// 0.725 0.700 0.693 0.682 0.669
-		for (int i=0;i<many_robo;i++) {
-			startTime=st;
-			totalCo2kg=0; totalCo2kw=0; totalCo2kWh=0;
-			System.out.println();
-			for (int j=process[i].length/2;j<process[i].length;j++) {
-				Co2kg=0;Co2kw=0;
-				System.out.print("Start : "+startTime+"\t"+Time.format(startTime*60000)+"\t");
-				double endTime = (double) startTime + process[i][j]; System.out.print((endTime-startTime)+"\t"+Time.format(endTime*60000)+"\t");
-					if (startTime < h3) { // 00:00~03:00  0.725 
-						if (endTime > h3) {
-							Co2kg = (h3-startTime)/60 *0.725; totalCo2kg += Co2kg;
-							Co2kw = (h3-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-							startTime = h3;
-						}else {
-							Co2kg = (endTime-startTime)/60 *0.725; totalCo2kg += Co2kg;
-							Co2kw = (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-						}
+		for (int i=0;i<Process.length;i++) {
+			Co2kg=0;Co2kw=0;
+			System.out.print("Start["+i+"] :"+Time.format(startTime*60000)+"   ");
+			double endTime = startTime + Process[i]; System.out.print((endTime-startTime)+"   "+Time.format(endTime*60000)+"     co2kwh: ");
+				if (startTime < h3) { // 00:00~03:00  0.725 
+					if (endTime > h3) {
+						Co2kg = (h3-startTime)/60*0.725; totalCo2kg += Co2kg;
+						Co2kw = (h3-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h3;
+					}else {
+						Co2kg = (endTime-startTime)/60*0.725; totalCo2kg += Co2kg;
+						Co2kw = (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
 					}
-					if (startTime >=h3 && startTime < h6) { // 03:00~06:00  0.700
-						if (endTime > h6) {
-							Co2kg = (h6-startTime)/60 *0.700;	totalCo2kg += Co2kg;
-							Co2kw = (h6-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-							startTime = h6;
-						}else {
-							Co2kg += (endTime -startTime)/60 *0.700; totalCo2kg += Co2kg;
-							Co2kw += (endTime -startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-						}
+				}
+				if (startTime >=h3 && startTime < h6) { // 03:00~06:00  0.700
+					if (endTime > h6) {
+						Co2kg = (h6-startTime)/60*0.700;	totalCo2kg += Co2kg;
+						Co2kw = ((h6-startTime)/Process[i])*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+//						System.out.print("..."+Co2kw*Co2kg+"...");
+
+						startTime = h6;
+					}else {
+						Co2kg += (endTime -startTime)/60*0.700; totalCo2kg += Co2kg;
+						Co2kw += (endTime -startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
 					}
-					if (startTime >=h6 && startTime < h12) { // 06:00~12:00 0.693
-						if (endTime > h12) {
-							Co2kg = (h12-startTime)/60 *0.693; totalCo2kg += Co2kg;
-							Co2kw = (h12-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-							startTime = h12;
-						}else {
-							Co2kg += (endTime-startTime)/60 *0.693; totalCo2kg += Co2kg;
-							Co2kw += (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-						}
+				}
+				if (startTime >=h6 && startTime < h12) { // 06:00~12:00 0.693
+					if (endTime > h12) {
+						Co2kg = (h12-startTime)/60*0.693; totalCo2kg += Co2kg;
+						Co2kw = (h12-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h12;
+					}else {
+						Co2kg += (endTime-startTime)/60*0.693; totalCo2kg += Co2kg;
+						Co2kw += (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+//						System.out.print("..."+(endTime - startTime)/60*0.693 * (endTime - startTime)/Process[i]*20+"...");
+						totalCo2kWh += Co2kg*Co2kw;
 					}
-					if (startTime >=h12 && startTime <h14) { // 12:00~14:00 0.682
-						if (endTime > h14) {
-							Co2kg = (h14-startTime)/60 *0.682; totalCo2kg += Co2kg;
-							Co2kw = (h14-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-							startTime = h14;
-						}else {
-							Co2kg += (endTime-startTime)/60 *0.682; totalCo2kg += Co2kg;
-							Co2kw += (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-						}
+				}
+				if (startTime >=h12 && startTime <h14) { // 12:00~14:00 0.682
+					if (endTime > h14) {
+						Co2kg = (h14-startTime)/60*0.682; totalCo2kg += Co2kg;
+						Co2kw = (h14-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h14;
+					}else {
+						Co2kg += (endTime-startTime)/60*0.682; totalCo2kg += Co2kg;
+						Co2kw += (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
 					}
-					if (startTime >=h14 && startTime <h17) { // 14:00~17:00 0.669
-						if (endTime > h17) {
-							Co2kg = (h17-startTime)/60 *0.669; totalCo2kg += Co2kg;
-							Co2kw = (h17-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-							startTime = h17;
-						}else {
-							Co2kg += (endTime-startTime)/60 *0.669; totalCo2kg += Co2kg;
-							Co2kw += (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-						}
+				}
+				if (startTime >=h14 && startTime <h17) { // 14:00~17:00 0.669
+					if (endTime > h17) {
+						Co2kg = (h17-startTime)/60*0.669; totalCo2kg += Co2kg;
+						Co2kw = (h17-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h17;
+					}else {
+						Co2kg += (endTime-startTime)/60*0.669; totalCo2kg += Co2kg;
+						Co2kw += (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
 					}
-					if (startTime >=h17 && startTime <h18) { // 17:00~18:00 0.682
-						if (endTime > h18) {
-							Co2kg = (h18-startTime)/60 *0.682; totalCo2kg += Co2kg;
-							Co2kw = (h18-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-							startTime = h18;
-						}else {
-							Co2kg += (endTime-startTime)/60 *0.682; totalCo2kg += Co2kg;
-							Co2kw += (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-						}
+				}
+				if (startTime >=h17 && startTime <h18) { // 17:00~18:00 0.682
+					if (endTime > h18) {
+						Co2kg = (h18-startTime)/60*0.682; totalCo2kg += Co2kg;
+						Co2kw = (h18-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h18;
+					}else {
+						Co2kg += (endTime-startTime)/60*0.682; totalCo2kg += Co2kg;
+						Co2kw += (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
 					}
-					if (startTime >=h18 && startTime <h21) { // 18:00~21:00 0.693
-						if (endTime > h21) {
-							Co2kg = (h21-startTime)/60 *0.693; totalCo2kg += Co2kg;
-							Co2kw = (h21-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-							startTime = h21;
-						}else {
-							Co2kg += (endTime-startTime)/60 *0.693; totalCo2kg += Co2kg;
-							Co2kw += (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-						}
+				}
+				if (startTime >=h18 && startTime <h21) { // 18:00~21:00 0.693
+					if (endTime > h21) {
+						Co2kg = (h21-startTime)/60*0.693; totalCo2kg += Co2kg;
+						Co2kw = (h21-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h21;
+					}else {
+						Co2kg += (endTime-startTime)/60*0.693; totalCo2kg += Co2kg;
+						Co2kw += (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
 					}
-					if (startTime >=h21 && startTime <h23) { // 21:00~23:00 0.700
-						if (endTime > h23) {
-							Co2kg = (h23-startTime)/60 *0.700; totalCo2kg += Co2kg;
-							Co2kw = (h23-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-							startTime = h23;
-						}else {
-							Co2kg += (endTime-startTime)/60 *0.700; totalCo2kg += Co2kg;
-							Co2kw += (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-						}
+				}
+				if (startTime >=h21 && startTime <h23) { // 21:00~23:00 0.700
+					if (endTime > h23) {
+						Co2kg = (h23-startTime)/60*0.700; totalCo2kg += Co2kg;
+						Co2kw = (h23-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h23;
+					}else {
+						Co2kg += (endTime-startTime)/60*0.700; totalCo2kg += Co2kg;
+						Co2kw += (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
 					}
-					if (startTime >=h23 && startTime <h24) { // 23:00~24:00 0.725
-						if (endTime >=h24) {
-							Co2kg = (h24-startTime)/60 *0.725; totalCo2kg += Co2kg;
-							Co2kw = (h24-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-							startTime = h24; //ÁµêÊùüÊôÇÈñìÂ§ßÊñº24:00.getTimeÂÄº
-						}else {
-							Co2kg += (endTime-startTime)/60 *0.725;	totalCo2kg += Co2kg;
-							Co2kw += (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-							totalCo2kWh += Co2kg*Co2kw;
-						}
+				}
+				if (startTime >=h23 && startTime <h24) { // 23:00~24:00 0.725
+					if (endTime >=h24) {
+						Co2kg = (h24-startTime)/60*0.725; totalCo2kg += Co2kg;
+						Co2kw = (h24-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
+						startTime = h24; //µ≤ßÙÆ…∂°§j©Û24:00.getTime≠»
+					}else {
+						Co2kg += (endTime-startTime)/60*0.725;	totalCo2kg += Co2kg;
+						Co2kw += (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+						totalCo2kWh += Co2kg*Co2kw;
 					}
-					
-					if (startTime == h24) {  // ÈñãÂßãÊèõÊó• 
-						startTime-=1320;     // startTime = 02:00.getTimeÂÄº
-						endTime-=1320;       // endTime   = 02:xx.getTimeÂÄº
-							if(startTime < h3)
-								if (endTime>h3) {// ÁµêÊùüÊôÇÈñì>3Èªû,ÂâáÂÖàË®àÁÆó(3Èªû-ÈñãÂ∑•ÊôÇÈñì)ÁöÑÂÄº
-									Co2kg += (h3-startTime)/60 *0.725; totalCo2kg += Co2kg;
-									Co2kw += (h3-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									startTime = h3;
-									totalCo2kWh += Co2kg*Co2kw;System.out.println("..."+Co2kg+"..."+Co2kw);
-								}else {//Ëã•ÁÑ°>3Èªû,ÂâáË°®Á§∫ÁµêÊùüÊôÇÈñìÂú®ÈöîÊó•ÈñãÂ∑•ÊôÇÈñìÁöÑÁ¨¨‰∏ÄÂÄãÂçÄÊÆµÂÖß
-									Co2kg += (endTime-startTime)/60 *0.725; totalCo2kg += Co2kg;
-									Co2kw += (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									totalCo2kWh += Co2kg*Co2kw;
-								}
-							if(startTime >=h3 && startTime <h6) {
-								if (endTime>h6) { // ÁµêÊùüÊôÇÈñì>6Èªû,ÂâáÂÖàË®àÁÆó(6Èªû-Á¨¨‰∫åÂçÄÊÆµÈñãÂßã)ÁöÑÂÄº
-									Co2kg += (h6-startTime)/60 *0.700; totalCo2kg += Co2kg;
-									Co2kw += (h6-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									startTime = h6;
-									totalCo2kWh += Co2kg*Co2kw;
-								}else {//Ëã•ÁÑ°>6Èªû,ÂâáË°®Á§∫ÁµêÊùüÊôÇÈñìÂú®ÈöîÊó•ÈñãÂ∑•ÊôÇÈñìÁ¨¨‰∏ÄÊôÇÈñìÂçÄÊÆµ+‰∏äÁ¨¨‰∫åÂÄãÂçÄÊÆµÂÖßÊôÇÈñì
-									Co2kg += (endTime-startTime)/60 *0.700; totalCo2kg += Co2kg;
-									Co2kw += (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									totalCo2kWh += Co2kg*Co2kw;
-								}
+				}
+				
+				if (startTime == h24) {  // ∂}©l¥´§È 
+					startTime-=1320;     // startTime = 02:00.getTime≠»
+					endTime-=1320;       // endTime   = 02:xx.getTime≠»
+						if(startTime < h3)
+							if (endTime>h3) {// µ≤ßÙÆ…∂°>3¬I,´h•˝≠p∫‚(3¬I-∂}§uÆ…∂°)™∫≠»
+								Co2kg += (h3-startTime)/60*0.725; totalCo2kg += Co2kg;
+								Co2kw += (h3-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								startTime = h3;
+								totalCo2kWh += Co2kg*Co2kw;
+							}else {//≠YµL>3¬I,´h™Ì•‹µ≤ßÙÆ…∂°¶bπj§È∂}§uÆ…∂°™∫≤ƒ§@≠”∞œ¨q§∫
+								Co2kg += (endTime-startTime)/60*0.725; totalCo2kg += Co2kg;
+								Co2kw += (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								totalCo2kWh += Co2kg*Co2kw;
 							}
-							if(startTime >=h6 && startTime <h12){
-								if (endTime>h12) {// ÁµêÊùüÊôÇÈñì>12Èªû,ÂâáÂÖàË®àÁÆó(12Èªû-Á¨¨‰∏âÂçÄÊÆµÈñãÂßã)ÁöÑÂÄº
-									Co2kg += (h12-startTime)/60 *0.693; totalCo2kg += Co2kg;
-									Co2kw += (h12-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									startTime = h12;//ÈÄôÈÇäÁöÑifÂà§Êñ∑ ÂÖàÊö´ÊôÇÂØ´‰∏âÂÄãÊôÇÈñìÂçÄÊÆµ
-									totalCo2kWh += Co2kg*Co2kw;
-								}else {//Ëã•ÁÑ°>12Èªû,ÂâáË°®Á§∫ÁµêÊùüÊôÇÈñìÂú®ÈöîÊó•ÈñãÂ∑•ÊôÇÈñìËá≥Á¨¨‰∏Ä„ÄÅ‰∫åÊôÇÈñìÂçÄÊÆµ+‰∏äÁ¨¨‰∏âÂÄãÂçÄÊÆµÂÖßÊôÇÈñì
-									Co2kg += (endTime-startTime)/60 *0.693; totalCo2kg += Co2kg;
-									Co2kw += (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									totalCo2kWh += Co2kg*Co2kw;
-								}
-							}	
-							if (startTime >=h12 && startTime <h14) {
-								if (endTime>h14) {// ÁµêÊùüÊôÇÈñì>14Èªû,ÂâáÂÖàË®àÁÆó(14Èªû-Á¨¨ÂõõÂçÄÊÆµÈñãÂßã)ÁöÑÂÄº
-									Co2kg += (h14-startTime)/60 *0.682; totalCo2kg += Co2kg;
-									Co2kw += (h14-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									startTime = h14;//ÈÄôÈÇäÁöÑifÂà§Êñ∑ ÂÖàÊö´ÊôÇÂØ´‰∏âÂÄãÊôÇÈñìÂçÄÊÆµ
-									totalCo2kWh += Co2kg*Co2kw;
-								}else {//Ëã•ÁÑ°>14Èªû,ÂâáË°®Á§∫ÁµêÊùüÊôÇÈñìÂú®ÈöîÊó•ÈñãÂ∑•ÊôÇÈñìËá≥Á¨¨‰∏Ä„ÄÅ‰∫å„ÄÅ‰∏âÊôÇÈñìÂçÄÊÆµ+‰∏äÁ¨¨ÂõõÂÄãÂçÄÊÆµÂÖßÊôÇÈñì
-									Co2kg += (endTime-startTime)/60 *0.682; totalCo2kg += Co2kg;
-									Co2kw += (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									totalCo2kWh += Co2kg*Co2kw;
-								}
-							}	
-							if(startTime >=h14 && startTime <h17) {
-								if (endTime>h17) {// ÁµêÊùüÊôÇÈñì>17Èªû,ÂâáÂÖàË®àÁÆó(17Èªû-Á¨¨‰∫îÂçÄÊÆµÈñãÂßã)ÁöÑÂÄº
-									Co2kg += (h17-startTime)/60 *0.669; totalCo2kg += Co2kg;
-									Co2kw += (h17-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									startTime = h17;//ÈÄôÈÇäÁöÑifÂà§Êñ∑ ÂÖàÊö´ÊôÇÂØ´‰∏âÂÄãÊôÇÈñìÂçÄÊÆµ
-									totalCo2kWh += Co2kg*Co2kw;
-								}else {//Ëã•ÁÑ°>18Èªû,ÂâáË°®Á§∫ÁµêÊùüÊôÇÈñìÂú®ÈöîÊó•ÈñãÂ∑•ÊôÇÈñìËá≥Á¨¨‰∏Ä„ÄÅ‰∫å„ÄÅ‰∏â„ÄÅÂõõ„ÄÅ‰∫îÊôÇÈñìÂçÄÊÆµ+‰∏äÁ¨¨‰∫îÂÄãÂçÄÊÆµÂÖßÊôÇÈñì
-									Co2kg += (endTime-startTime)/60 *0.669; totalCo2kg += Co2kg;
-									Co2kw += (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									totalCo2kWh += Co2kg*Co2kw;
-								}
+						if(startTime >=h3 && startTime <h6) {
+							if (endTime>h6) { // µ≤ßÙÆ…∂°>6¬I,´h•˝≠p∫‚(6¬I-≤ƒ§G∞œ¨q∂}©l)™∫≠»
+								Co2kg += (h6-startTime)/60*0.700; totalCo2kg += Co2kg;
+								Co2kw += (h6-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								startTime = h6;
+								totalCo2kWh += Co2kg*Co2kw;
+							}else {//≠YµL>6¬I,´h™Ì•‹µ≤ßÙÆ…∂°¶bπj§È∂}§uÆ…∂°≤ƒ§@Æ…∂°∞œ¨q+§W≤ƒ§G≠”∞œ¨q§∫Æ…∂°
+								Co2kg += (endTime-startTime)/60*0.700; totalCo2kg += Co2kg;
+								Co2kw += (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								totalCo2kWh += Co2kg*Co2kw;
 							}
-							if (startTime >=h17 && startTime <h18) {
-								if (endTime>h18) {// ÁµêÊùüÊôÇÈñì>18Èªû,ÂâáÂÖàË®àÁÆó(18Èªû-Á¨¨ÂÖ≠ÂçÄÊÆµÈñãÂßã)ÁöÑÂÄº
-									Co2kg += (h18-startTime)/60 *0.682; totalCo2kg += Co2kg;
-									Co2kw += (h18-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									startTime = h18;//ÈÄôÈÇäÁöÑifÂà§Êñ∑ ÂÖàÊö´ÊôÇÂØ´‰∏âÂÄãÊôÇÈñìÂçÄÊÆµ
-									totalCo2kWh += Co2kg*Co2kw;
-								}else {//Ëã•ÁÑ°>18Èªû,ÂâáË°®Á§∫ÁµêÊùüÊôÇÈñìÂú®ÈöîÊó•ÈñãÂ∑•ÊôÇÈñìËá≥Á¨¨‰∏Ä„ÄÅ‰∫å„ÄÅ‰∏â„ÄÅÂõõ„ÄÅ‰∫îÊôÇÈñìÂçÄÊÆµ+‰∏äÁ¨¨ÂÖ≠ÂÄãÂçÄÊÆµÂÖßÊôÇÈñì
-									Co2kg += (endTime-startTime)/60 *0.682; totalCo2kg += Co2kg;
-									Co2kw += (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									totalCo2kWh += Co2kg*Co2kw;
-								}
-							}	
-							if (startTime >=h18 && startTime <h21) {
-								if (endTime>h21) {// ÁµêÊùüÊôÇÈñì>21Èªû,ÂâáÂÖàË®àÁÆó(21Èªû-Á¨¨‰∏ÉÂçÄÊÆµÈñãÂßã)ÁöÑÂÄº
-									Co2kg += (h21-startTime)/60 *0.693; totalCo2kg += Co2kg;
-									Co2kw += (h21-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									startTime = h21;//ÈÄôÈÇäÁöÑifÂà§Êñ∑ ÂÖàÊö´ÊôÇÂØ´‰∏âÂÄãÊôÇÈñìÂçÄÊÆµ
-									totalCo2kWh += Co2kg*Co2kw;
-								}else {//Ëã•ÁÑ°>12Èªû,ÂâáË°®Á§∫ÁµêÊùüÊôÇÈñìÂú®ÈöîÊó•ÈñãÂ∑•ÊôÇÈñìËá≥Á¨¨‰∏Ä„ÄÅ‰∫å„ÄÅ‰∏â„ÄÅÂõõ„ÄÅ‰∫î„ÄÅÂÖ≠ÊôÇÈñìÂçÄÊÆµ+‰∏äÁ¨¨‰∏ÉÂÄãÂçÄÊÆµÂÖßÊôÇÈñì
-									Co2kg += (endTime-startTime)/60 *0.693; totalCo2kg += Co2kg;
-									Co2kw += (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									totalCo2kWh += Co2kg*Co2kw;
-								}
+						}
+						if(startTime >=h6 && startTime <h12){
+							if (endTime>h12) {// µ≤ßÙÆ…∂°>12¬I,´h•˝≠p∫‚(12¬I-≤ƒ§T∞œ¨q∂}©l)™∫≠»
+								Co2kg += (h12-startTime)/60*0.693; totalCo2kg += Co2kg;
+								Co2kw += (h12-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								startTime = h12;//≥o√‰™∫ifßP¬_ •˝º»Æ…ºg§T≠”Æ…∂°∞œ¨q
+								totalCo2kWh += Co2kg*Co2kw;
+							}else {//≠YµL>12¬I,´h™Ì•‹µ≤ßÙÆ…∂°¶bπj§È∂}§uÆ…∂°¶‹≤ƒ§@°B§GÆ…∂°∞œ¨q+§W≤ƒ§T≠”∞œ¨q§∫Æ…∂°
+								Co2kg += (endTime-startTime)/60*0.693; totalCo2kg += Co2kg;
+								Co2kw += (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								totalCo2kWh += Co2kg*Co2kw;
 							}
-							if (startTime >=h21 && startTime <h23) {
-								if (endTime>h23) {// ÁµêÊùüÊôÇÈñì>23Èªû,ÂâáÂÖàË®àÁÆó(23Èªû-Á¨¨ÂÖ´ÂçÄÊÆµÈñãÂßã)ÁöÑÂÄº
-									Co2kg += (h23-startTime)/60 *0.700; totalCo2kg += Co2kg;
-									Co2kw += (h23-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									startTime = h23;//ÈÄôÈÇäÁöÑifÂà§Êñ∑ ÂÖàÊö´ÊôÇÂØ´‰∏âÂÄãÊôÇÈñìÂçÄÊÆµ
-									totalCo2kWh += Co2kg*Co2kw;
-								}else {//Ëã•ÁÑ°>23Èªû,ÂâáË°®Á§∫ÁµêÊùüÊôÇÈñìÂú®ÈöîÊó•ÈñãÂ∑•ÊôÇÈñìËá≥Á¨¨‰∏Ä„ÄÅ‰∫å„ÄÅ‰∏â„ÄÅÂõõ„ÄÅ‰∫î„ÄÅÂÖ≠„ÄÅ‰∏ÉÊôÇÈñìÂçÄÊÆµ+‰∏äÁ¨¨ÂÖ´ÂÄãÂçÄÊÆµÂÖßÊôÇÈñì
-									Co2kg += (endTime-startTime)/60 *0.700; totalCo2kg += Co2kg;
-									Co2kw += (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									totalCo2kWh += Co2kg*Co2kw;
-								}
+						}	
+						if (startTime >=h12 && startTime <h14) {
+							if (endTime>h14) {// µ≤ßÙÆ…∂°>14¬I,´h•˝≠p∫‚(14¬I-≤ƒ•|∞œ¨q∂}©l)™∫≠»
+								Co2kg += (h14-startTime)/60*0.682; totalCo2kg += Co2kg;
+								Co2kw += (h14-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								startTime = h14;//≥o√‰™∫ifßP¬_ •˝º»Æ…ºg§T≠”Æ…∂°∞œ¨q
+								totalCo2kWh += Co2kg*Co2kw;
+							}else {//≠YµL>14¬I,´h™Ì•‹µ≤ßÙÆ…∂°¶bπj§È∂}§uÆ…∂°¶‹≤ƒ§@°B§G°B§TÆ…∂°∞œ¨q+§W≤ƒ•|≠”∞œ¨q§∫Æ…∂°
+								Co2kg += (endTime-startTime)/60*0.682; totalCo2kg += Co2kg;
+								Co2kw += (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								totalCo2kWh += Co2kg*Co2kw;
 							}
-							if (startTime >=h23 && startTime <h24) {
-								if (endTime>=h24) {
-									Co2kg += (h24-startTime)/60 *0.725; totalCo2kg += Co2kg;
-									Co2kw += (h24-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									startTime =h24;
-									totalCo2kWh += Co2kg*Co2kw;
-								}else {
-									Co2kg += (endTime-startTime)/60 *0.725; totalCo2kg += Co2kg;
-									Co2kw += (endTime-startTime)/60 *Power[i]; totalCo2kw += Co2kw;
-									totalCo2kWh += Co2kg*Co2kw;
-								}
+						}	
+						if(startTime >=h14 && startTime <h17) {
+							if (endTime>h17) {// µ≤ßÙÆ…∂°>17¬I,´h•˝≠p∫‚(17¬I-≤ƒ§≠∞œ¨q∂}©l)™∫≠»
+								Co2kg += (h17-startTime)/60*0.669; totalCo2kg += Co2kg;
+								Co2kw += (h17-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								startTime = h17;//≥o√‰™∫ifßP¬_ •˝º»Æ…ºg§T≠”Æ…∂°∞œ¨q
+								totalCo2kWh += Co2kg*Co2kw;
+							}else {//≠YµL>18¬I,´h™Ì•‹µ≤ßÙÆ…∂°¶bπj§È∂}§uÆ…∂°¶‹≤ƒ§@°B§G°B§T°B•|°B§≠Æ…∂°∞œ¨q+§W≤ƒ§≠≠”∞œ¨q§∫Æ…∂°
+								Co2kg += (endTime-startTime)/60*0.669; totalCo2kg += Co2kg;
+								Co2kw += (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								totalCo2kWh += Co2kg*Co2kw;
 							}
-					}
-					startTime = endTime;
-					System.out.println(Math.rint(Co2kg*1000)/1000+"\t"+Math.rint(Co2kw*1000)/1000);
-			}
-			System.out.print("totalCo2kg: "+Math.rint(totalCo2kg*1000)/1000+"\t"+"totalCo2kw: "+ Math.rint(totalCo2kw*1000)/1000+"\t"+"totalCo2kWh: "+ Math.rint(totalCo2kWh*1000)/1000+"\n");
+						}
+						if (startTime >=h17 && startTime <h18) {
+							if (endTime>h18) {// µ≤ßÙÆ…∂°>18¬I,´h•˝≠p∫‚(18¬I-≤ƒ§ª∞œ¨q∂}©l)™∫≠»
+								Co2kg += (h18-startTime)/60*0.682; totalCo2kg += Co2kg;
+								Co2kw += (h18-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								startTime = h18;//≥o√‰™∫ifßP¬_ •˝º»Æ…ºg§T≠”Æ…∂°∞œ¨q
+								totalCo2kWh += Co2kg*Co2kw;
+							}else {//≠YµL>18¬I,´h™Ì•‹µ≤ßÙÆ…∂°¶bπj§È∂}§uÆ…∂°¶‹≤ƒ§@°B§G°B§T°B•|°B§≠Æ…∂°∞œ¨q+§W≤ƒ§ª≠”∞œ¨q§∫Æ…∂°
+								Co2kg += (endTime-startTime)/60*0.682; totalCo2kg += Co2kg;
+								Co2kw += (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								totalCo2kWh += Co2kg*Co2kw;
+							}
+						}	
+						if (startTime >=h18 && startTime <h21) {
+							if (endTime>h21) {// µ≤ßÙÆ…∂°>21¬I,´h•˝≠p∫‚(21¬I-≤ƒ§C∞œ¨q∂}©l)™∫≠»
+								Co2kg += (h21-startTime)/60*0.693; totalCo2kg += Co2kg;
+								Co2kw += (h21-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								startTime = h21;//≥o√‰™∫ifßP¬_ •˝º»Æ…ºg§T≠”Æ…∂°∞œ¨q
+								totalCo2kWh += Co2kg*Co2kw;
+							}else {//≠YµL>12¬I,´h™Ì•‹µ≤ßÙÆ…∂°¶bπj§È∂}§uÆ…∂°¶‹≤ƒ§@°B§G°B§T°B•|°B§≠°B§ªÆ…∂°∞œ¨q+§W≤ƒ§C≠”∞œ¨q§∫Æ…∂°
+								Co2kg += (endTime-startTime)/60*0.693; totalCo2kg += Co2kg;
+								Co2kw += (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								totalCo2kWh += Co2kg*Co2kw;
+							}
+						}
+						if (startTime >=h21 && startTime <h23) {
+							if (endTime>h23) {// µ≤ßÙÆ…∂°>23¬I,´h•˝≠p∫‚(23¬I-≤ƒ§K∞œ¨q∂}©l)™∫≠»
+								Co2kg += (h23-startTime)/60*0.700; totalCo2kg += Co2kg;
+								Co2kw += (h23-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								startTime = h23;//≥o√‰™∫ifßP¬_ •˝º»Æ…ºg§T≠”Æ…∂°∞œ¨q
+								totalCo2kWh += Co2kg*Co2kw;
+							}else {//≠YµL>23¬I,´h™Ì•‹µ≤ßÙÆ…∂°¶bπj§È∂}§uÆ…∂°¶‹≤ƒ§@°B§G°B§T°B•|°B§≠°B§ª°B§CÆ…∂°∞œ¨q+§W≤ƒ§K≠”∞œ¨q§∫Æ…∂°
+								Co2kg += (endTime-startTime)/60*0.700; totalCo2kg += Co2kg;
+								Co2kw += (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								totalCo2kWh += Co2kg*Co2kw;
+							}
+						}
+						if (startTime >=h23 && startTime <h24) {
+							if (endTime>=h24) {
+								Co2kg += (h24-startTime)/60*0.725; totalCo2kg += Co2kg;
+								Co2kw += (h24-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								startTime = h24;
+								totalCo2kWh += Co2kg*Co2kw;
+							}else {
+								Co2kg += (endTime-startTime)/60*0.725; totalCo2kg += Co2kg;
+								Co2kw += (endTime-startTime)/Process[i]*Power; totalCo2kw += Co2kw;
+								totalCo2kWh += Co2kg*Co2kw;
+							}
+						}
+				}
+				startTime = endTime;
+				System.out.println();
+//				System.out.println(Math.rint(totalCo2kg*totalCo2kw)*1000/1000);
 		}
+		System.out.print("totalCo2kg: "+Math.rint(totalCo2kg*1000)/1000+"\t"+"totalCo2kw: "+ Math.rint(totalCo2kw*1000)/1000+"\t"+"totalCo2kWh: "+ Math.rint(totalCo2kWh*1000)/1000);		
+//		System.out.print("totalCo2kWh: "+ Math.rint(totalCo2kWh*1000)/1000);
 	}
 }

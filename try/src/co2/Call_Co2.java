@@ -2,53 +2,88 @@ package co2;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Random;
 
-import co2.Te;
-import co2.Co2;
 
-public class Call_test {
-	public static void main(String[] args) throws IOException, Exception {
-		//è®€å–(ç·´ç¿’æª”) ä½å€
-		FileReader fr = new FileReader("src//co2//p10x3_0.txt");
+public class Call_Co2 {
+	
+    double[] Process;
+	double[] Process2;
+	int Power;
+	int count = 0;
+	double startTime;
+
+	public Call_Co2() throws IOException, Exception {
+		//³]©w¶}¤u®É¶¡
+		SimpleDateFormat Time = new SimpleDateFormat("HH:mm");
+		this.startTime = (double)Time.parse("02:00").getTime()/(1000*60);
+		this.Power = 20;
+		
+		//Åª¨ú(½m²ßÀÉ) ¦ì§}
+		FileReader fr = new FileReader("src//co2//p10x4_0.txt");
 		BufferedReader br = new BufferedReader(fr); 
 		
-		//è®€å…¥ (ç·´ç¿’æª”) ç¬¬ä¸€è¡Œ å­—ä¸²åˆ†å‰² 10ç­†è™•ç†èˆ‡3å°æ©Ÿå™¨
-		String temp = br.readLine(),str[]=temp.split("	"); int pro = Integer.parseInt(str[0]),many_robo=Integer.parseInt(str[1]); 
-		
-		double[][] Process = new double[many_robo][pro*2];
-		double[] Period = new double[many_robo];
-		int [] Power = {20,30,15,10,15,30,10,20};
-		int count=0;
-		
-		//è®€é€²(ç·´ç¿’æª”) æ¯å°æ©Ÿå™¨çš„åˆ©å•èˆ‡è™•ç†æ™‚é–“
+		//Åª¤J (½m²ßÀÉ) ²Ä¤@¦æ ¦r¦ê¤À³Î 10µ§³B²z
+		String temp = br.readLine(),str[]; int size = Integer.parseInt(temp); 
+		this.Process = new double[size];
+		this.Process2 = new double[size];
+		//­ì§Ç
+		System.out.print("Process­ì§Ç¡G");for (int i=0;i<Process.length;i++){System.out.print(" "+i+" ");}System.out.println();
+				
+		//Åª¶i(½m²ßÀÉ) ¨C¥x¾÷¾¹ªº§Q°İ»P³B²z®É¶¡
+		System.out.print("Process¥\°·¡G");
 		while(br.ready()) {
 			temp = br.readLine(); 	str=temp.split("	");
-			for(int i=0;i<str.length;i++) {
-				Process[i][count]=Double.parseDouble(str[i]);//System.out.print(str[i]+"\t");
-			}count++;//System.out.println();
-		}
+				Process[count]=Double.parseDouble(str[0]);System.out.print(str[0]+" ");
+				Process2[count]=Process[count];
+			count++;
+		}//System.out.println();
 		fr.close();		br.close();
 		
-		//é¡¯ç¤º(ç·´ç¿’æª”) æ¯å°æ©Ÿå™¨èˆ‡è™•ç†æ™‚é–“
-		for (int i=0; i<many_robo;i++) {
-			for (int j=Process[i].length/2;j<Process[i].length;j++) {
-				System.out.print(Process[i][j]+"\t");
-			}System.out.println();
-		}
+		//©I¥s¹Bºâ¤èªk
+//		new Co2(Process,Power,startTime);
+		//Co2 call_co2 = new Co2(Process,Power,startTime);
+		System.out.println();
 		
-		//æ¯å°æ©Ÿå™¨ é–‹å§‹è‡³çµæŸ ç¸½èŠ±è²»æ™‚é–“
-		for (int i=0;i<many_robo;i++) {
-			for (int j=Process[i].length/2;j<Process[i].length;j++) {
-				Period[i] += Process[i][j];
-			}System.out.print(Period[i]+"\t");
+		//·s§Ç
+		Random ran = new Random();       	//«Å§i¶Ã¼Æ¨ç¼Æ
+		int ran_num;						//±µ¦¬¶Ã¼Æ²£¥Íªº­È
+		int [] num1 = new int[size];			//°}¦C0~9µ§(½m²ßÀÉ²Ä¤@µ§)
+		for (int i=0;i<size;i++){num1[i]=i;}	//½á¤©²Ä¤@­Ó°}¦C[0~9]°}¦C0~9ªº¼Æ­È
+		int[] order = new int[size];		//«Å§i²Ä¤G­Ó¥Î§@°O¿ı¶¶§Çªº°}¦C
+			
+		System.out.print("Process·s§Ç¡G");
+		for (int i=0;i<order.length;i++){	//¦@°õ¦æ10¦¸(µ§)
+			ran_num= ran.nextInt(size-i);	//¶Ã¼Æ-i ¬O¦]¬° °²³]¤@¶}©l0~9(¶Ã¼Æ½d³ò) ¨C¨ú¨«1­Ó­È½d³ò´N´î¤Ö1µ§(0~8)..(0~7)..Ãş±À
+			order[i]=num1[ran_num];			//±Nnum1[ran_num]¤ºªº­È¨ú¨« µ¹order[0]..1..2Ãş±À
+			Process[i]=Process2[order[i]];
+			System.out.print(" "+order[i]+" "); //Æ[¬İ¶¶§Ç			
+			for (int j=ran_num;j<order.length-i-1;j++){
+				num1[j] = num1[j+1];		//¨C¨ú¨«¤@µ§ ±N«á­±¨C¤@µ§©¹«e®¿1®æ
+			}
 		}System.out.println();
 		
+		//·s§Ç¹ïÀ³¥\°·
+		System.out.print("Process¥\°·¡G");for (int i=0;i<order.length;i++){System.out.print((int)Process[i]+" ");}System.out.println();
 		
-		SimpleDateFormat Time = new SimpleDateFormat("HH:mm");
-		double startTime = Time.parse("02:00").getTime() / (1000*60);
-		
-		Co2 callco2 = new Co2(Process,Period,Power,startTime,many_robo);
+		//©I¥s¹Bºâ¤èªk
+//		new Co2(Process,Power,startTime);
 		
 	}
+	
+	
+	
+	public double[] getProcess() {
+		return Process;
+	}
+	public int getPower() {
+		return Power;
+	}
+	public double getStartTime() {
+		return startTime;
+	}
+
+
 }

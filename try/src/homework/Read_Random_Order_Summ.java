@@ -1,84 +1,74 @@
-package homework;
+	package homework;
 import java.io.*;
 import java.util.Random;
-import homework.Swap;
-public class Read_Random_Order_Sum {
+
+public class Read_Random_Order_Summ {
 	public static void main(String[] args) throws IOException {
-		FileReader fr = new FileReader("src//homework//distanceData16.txt");//è®€å–xyæ–‡å­—ç·´ç¿’æª”
-		BufferedReader br = new BufferedReader(fr);		//æš«å­˜è®€æª”
+		FileReader fr = new FileReader("src//homework//xy.txt");//Åª¨úxy¤å¦r½m²ßÀÉ
+		BufferedReader br = new BufferedReader(fr);		//¼È¦sÅªÀÉ
 		
-		int num = Integer.parseInt(br.readLine()); 	//è®€ç¸½å…±æœ‰å¹¾ç­†è³‡æ–™(åšå‹•æ…‹é™£åˆ—ç”¨)
-		double xy[][] = new double[num][3];        	//å®£å‘ŠäºŒç¶­é™£åˆ—
+		int num = Integer.parseInt(br.readLine()); 	//ÅªÁ`¦@¦³´Xµ§¸ê®Æ(°µ°ÊºA°}¦C¥Î)
+		double xy[][] = new double[num][2];        	//«Å§i¤Gºû°}¦C
 		
-		String temp="",bf[];	//è®€æª” & å­—ä¸²åˆ†å‰²
-		int count = 0;		//é™£åˆ—çš„åˆ—
-		while(count < num){     //ç¬¬0åˆ—åˆ°æœ€å¾Œä¸€åˆ—   
+		String temp="",bf[];	//ÅªÀÉ & ¦r¦ê¤À³Î
+		int count = 0;		//°}¦Cªº¦C
+		while(count < num){     //²Ä0¦C¨ì³Ì«á¤@¦C   
 			temp = br.readLine();  
 			bf = temp.split(" ");  
-			for(int i=0;i<=2;i++){  //å¯«å…¥ æ¯ä¸€åˆ—çš„[count][0]èˆ‡[count][1]
-				xy[count][i] = Double.parseDouble(bf[i]); //ç”±æ–¼readLineè®€æª”æ˜¯å­—ä¸²å‹æ…‹ï¼Œæ‰€ä»¥éœ€è¦å¼·åˆ¶è½‰å‹æ•¸å€¼
+			for(int i=0;i<2;i++){  //¼g¤J ¨C¤@¦Cªº[count][0]»P[count][1]
+				xy[count][i] = Double.parseDouble(bf[i]); //¥Ñ©óreadLineÅªÀÉ¬O¦r¦ê«¬ºA¡A©Ò¥H»İ­n±j¨îÂà«¬¼Æ­È
 			}
 			count++;
 		}
-		fr.close();//é—œé–‰è®€æª”
-		br.close();//é—œé–‰æš«å­˜è®€æª”
+		fr.close();//Ãö³¬ÅªÀÉ
+		br.close();//Ãö³¬¼È¦sÅªÀÉ
 
 	double Record[][][] = new double[num][num][1]; 	
-	for (int ii=0;ii<2;ii++){ //ä¸€æ¬¡åŸ·è¡Œ5è¬æ¬¡(10ç­†) ç´„2ç§’å¤š
+	for (int ii=0;ii<50000;ii++){ //¤@¦¸°õ¦æ5¸U¦¸(10µ§) ¬ù2¬í¦h
 		
-		Random ran = new Random();       	//å®£å‘Šäº‚æ•¸
-		int ran_num;				//æ¥æ”¶äº‚æ•¸ç”¢ç”Ÿçš„å€¼
-		int [] num1 = new int[num];		//é™£åˆ—0~9ç­†(ç·´ç¿’æª”ç¬¬ä¸€ç­†)
-		for (int i=0;i<num;i++){num1[i]=i;}	//è³¦äºˆç¬¬ä¸€å€‹num1[0~9]é™£åˆ—0~9çš„æ•¸å€¼
-		int [] order = new int[num];		//å®£å‘Šç¬¬äºŒå€‹ç”¨ä½œè¨˜éŒ„é †åºçš„é™£åˆ—
-			
-		//System.out.print("éš¨æ©Ÿåºï¼š");		
-		for (int i=0;i<order.length;i++){	//å…±åŸ·è¡Œ10æ¬¡(ç­†)
-			ran_num= ran.nextInt(num-i);	//äº‚æ•¸-i æ˜¯å› ç‚º å‡è¨­ä¸€é–‹å§‹0~9(äº‚æ•¸ç¯„åœ) æ¯å–èµ°1å€‹å€¼ç¯„åœå°±æ¸›å°‘1ç­†(0~8)..(0~7)..é¡æ¨
-			order[i]=num1[ran_num];		//å°‡num1[ran_num]å…§çš„å€¼å–èµ° çµ¦order[0]..1..2é¡æ¨
-			//System.out.print(order[i]+" "); //è§€çœ‹é †åº
+		Random ran = new Random();       	//«Å§i¶Ã¼Æ
+		int ran_num;				//±µ¦¬¶Ã¼Æ²£¥Íªº­È
+		int [] num1 = new int[num];		//°}¦C0~9µ§(½m²ßÀÉ²Ä¤@µ§)
+		for (int i=0;i<num;i++){num1[i]=i;}	//½á¤©²Ä¤@­Ónum1[0~9]°}¦C0~9ªº¼Æ­È
+		int [] order = new int[num];		//«Å§i²Ä¤G­Ó¥Î§@°O¿ı¶¶§Çªº°}¦C
+		System.out.print("ÀH¾÷¶¶§Ç¡G");
+		for (int i=0;i<order.length;i++){	//¦@°õ¦æ10¦¸(µ§)
+			ran_num= ran.nextInt(num-i);	//¶Ã¼Æ-i ¬O¦]¬° °²³]¤@¶}©l0~9(¶Ã¼Æ½d³ò) ¨C¨ú¨«1­Ó­È½d³ò´N´î¤Ö1µ§(0~8)..(0~7)..Ãş±À
+			order[i]=num1[ran_num];		//±Nnum1[ran_num]¤ºªº­È¨ú¨« µ¹order[0]..1..2Ãş±À
+			System.out.print(order[i]+" "); //Æ[¬İ¶¶§Ç
 			for (int j=ran_num;j<order.length-i-1;j++){
-				num1[j] = num1[j+1];//æ¯å–èµ°ä¸€ç­† å°‡å¾Œé¢æ¯ä¸€ç­†å¾€å‰æŒª1æ ¼
+				num1[j] = num1[j+1];//¨C¨ú¨«¤@µ§ ±N«á­±¨C¤@µ§©¹«e®¿1®æ
 			}
 		}
-		//int[] order = {0,3,2,1,4,5};
-		
-		System.out.print("åŸåºåˆ—ï¼š");	for (int i=0;i<order.length;i++) {System.out.print(order[i]+" ");}System.out.println();		
-		Max(num,xy,order,Record);
-		Swap swap = new Swap(order);
-		Max(num,xy,order,Record);
-		System.out.println();
-		
-	}
-	}
-	
-	private static void Max(int num, double[][] xy, int[] order, double[][][] record) {
+		//§â¤U­±³o¦æ ©ñ¨ì¥~¼h for°j°é¤W­± (¤@¦¸°õ¦æ)
+		//double Record[][][] = new double[num][num][1]; //¤Tºû°}¦C ¥Î§@¬ö¿ı(Step1.§¹¦¨ Step2.«İÄò)
 		double sum2=0.0;
 		for (int i=0;i<xy.length-1;i++){
-			if(record[order[i]][order[i+1]][0] ==0 || record[order[i+1]][order[i]][0] ==0){
-				record[order[i]][order[i+1]][0] = Math.sqrt(Math.pow(xy[order[i]][1]-xy[order[i+1]][1],2) + Math.pow(xy[order[i]][2]-xy[order[i+1]][2],2));
-				record[order[i+1]][order[i]][0] = record[order[i]][order[i+1]][0]; 
-				sum2+=record[order[i]][order[i+1]][0];
-				//System.out.println("ç¬¬"+i+"é»è·é›¢ï¼š"+Record[order[i]][order[i+1]][0]);
+			if(Record[order[i]][order[i+1]][0] ==0 || Record[order[i+1]][order[i]][0] ==0){
+				Record[order[i]][order[i+1]][0] = Math.sqrt(Math.pow((xy[order[i]][0]-xy[order[i+1]][0]),2) + Math.pow((xy[order[i]][1]-xy[order[i+1]][1]),2));
+				Record[order[i+1]][order[i]][0] = Record[order[i]][order[i+1]][0]; 
+				sum2+=Record[order[i]][order[i+1]][0];
 			}
 			else{
-				sum2+=record[order[i]][order[i+1]][0];
-				//System.out.println("ç¬¬"+i+"é»è·é›¢ï¼š"+Record[order[i]][order[i+1]][0]);
+				sum2+=Record[order[i]][order[i+1]][0];
 			}	
 		}
-		record[order[num-1]][order[0]][0] = Math.sqrt(Math.pow(xy[order[num-1]][1]-xy[order[0]][1],2) + Math.pow(xy[order[num-1]][2]-xy[order[0]][2],2));
-		record[0][order[order[num-1]]][0] = record[order[num-1]][order[0]][0];
-		sum2+=record[order[num-1]][order[0]][0];
-		//System.out.println("æœ€å¾Œé»è·é›¢ï¼š"+Record[order[num-1]][order[0]][0]);
-		System.out.println("è·é›¢å’Œï¼š"+sum2); //é€™é‚Šçš„çµæœèˆ‡ä¸‹é¢çš„çµæœæ˜¯ä¸€æ¨£çš„æ¥ä¸‹ä¾†è¦åšç¬¬äºŒæ­¥
+		Record[order[num-1]][order[0]][0] = Math.sqrt(Math.pow((xy[order[num-1]][0]-xy[order[0]][0]),2) + Math.pow((xy[order[num-1]][1]-xy[order[0]][1]),2));
+		Record[0][order[order[num-1]]][0] = Record[order[num-1]][order[0]][0];
+		sum2+=Record[order[num-1]][order[0]][0];
+		System.out.println("¶ZÂ÷Á`©M¡G"+sum2); //³oÃäªºµ²ªG»P¤U­±ªºµ²ªG¬O¤@¼Ëªº±µ¤U¨Ó­n°µ²Ä¤G¨B
+		//²Ä¤G¨B¬O ¤@­ÓIF ¥]¦í¤W­±¹Bºâ ¤º¦³for(int i=0;i<xy.length-1;i++)
+		//¦A¤@­ÓIF§PÂ_Record[i][i+1][0]¬O§_!=0 ¬O´Nª½±µsum2+=Record[i][i+1][0]; §_´N¦b°O¿ı¶i¥h,³o¼Ë¤§«á­«½Æ³£·|ª½±µ+¦Ó¤£·|­«½Æ¹Bºâ;
 	}
-
-	//  Math.sqrt(36); æ ¹è™Ÿ		//  Math.pow(2,2); açš„bæ¬¡æ–¹
-	
-	//  ä¸€. è®€æª”ï¼› 10ç­†è³‡æ–™(ç·´ç¿’æª”)ã€
-	//  äºŒ. é †åºï¼› éš¨æ©Ÿé»(åŸé»)èˆ‡ä¸‹ä¸€å€‹éš¨æ©Ÿé€£æ¥é»(é¡æ¨)
-	//  ä¸‰. ç¸½å’Œï¼›ä¸€ç›´åˆ°10å€‹åº§æ¨™éƒ½é€£å®Œ1æ¬¡, æ¥è‘—åœ¨,é€£å›ç¬¬ä¸€å€‹éš¨æ©Ÿé»(åŸé»).
-	//  å››. é‡è¤‡é‹ç®—ï¼›ç¬¬ä¸€æ¬¡åŸ·è¡Œæ™‚åˆ¤æ–·ä¸‰ç¶­é™£åˆ—é‚£æ ¼æ˜¯å¦ç‚ºç©ºï¼Œè‹¥ç‚ºç©ºå…ˆåšé‹ç®—å¾ŒåŠ å…¥ä¸‰ç¶­é™£åˆ—æŒ‡å®šæ ¼å…§ï¼Œ
-	//		 è‹¥ä¸‰ç¶­é™£åˆ—å…§æœ‰å€¼(è¡¨ç¤ºå·²ç¶“é‹ç®—éä¸”å·²æ”¾å…¥é™£åˆ—å…§)ï¼Œå‰‡ç›´æ¥åŠ å…¥sumè£¡é¢ã€‚
-        //  äº”. åŒ¯å…¥å¤–éƒ¨javaæ–¹æ³•(Swap) ä»¥not-staticæ–¹æ³•å‘¼å« 
+		
+		//  Math.sqrt(36); ®Ú¸¹
+		//  Math.pow(2,2); aªºb¦¸¤è
+		
+		//  ¤@. ÅªÀÉ¡F 10µ§¸ê®Æ(½m²ßÀÉ)¡B
+		//  ¤G. ¶¶§Ç¡F ÀH¾÷ÂI(­ìÂI)»P¤U¤@­ÓÀH¾÷³s±µÂI(Ãş±À)
+		//  ¤T. Á`©M¡F¤@ª½¨ì10­Ó®y¼Ğ³£³s§¹1¦¸, ±µµÛ¦b,³s¦^²Ä¤@­ÓÀH¾÷ÂI(­ìÂI).
+		//  ¥|. ­«½Æ¹Bºâ¡F²Ä¤@¦¸°õ¦æ®É§PÂ_¤Tºû°}¦C¨º®æ¬O§_¬°ªÅ¡A­Y¬°ªÅ¥ı°µ¹Bºâ«á¥[¤J¤Tºû°}¦C«ü©w®æ¤º¡A
+		//		 ­Y¤Tºû°}¦C¤º¦³­È(ªí¥Ü¤w¸g¹Bºâ¹L¥B¤w©ñ¤J°}¦C¤º)¡A«hª½±µ¥[¤Jsum¸Ì­±¡C
+                          
+	}
 }
