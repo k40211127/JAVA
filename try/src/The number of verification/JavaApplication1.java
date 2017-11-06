@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class JavaApplication1 {
 
-    static ArrayList a = new ArrayList();
+    ArrayList a = new ArrayList();
     ArrayList b = new ArrayList();
     ArrayList c = new ArrayList();
     ArrayList d = new ArrayList();
@@ -22,7 +22,7 @@ public class JavaApplication1 {
     }
 
     public void read_csv() throws FileNotFoundException, IOException {
-        FileReader fr = new FileReader("Source20171104.csv");
+        FileReader fr = new FileReader("Source20171102.csv");
         BufferedReader br = new BufferedReader(fr);
 
         String str = br.readLine(), temp[];
@@ -57,21 +57,33 @@ public class JavaApplication1 {
                     break;
                 }
             }
-            data[i][5] = String.valueOf(pid_count);
-            data[i][4] = String.valueOf(sequence_count);
-            int bb = Integer.parseInt(data[0][1]);
-            //xx.compareTo(yy) > 0
-            // 同一人出現次數 > 1次以上
+                      
+            int count=0;
             if (pid_count > 1) {
-                for (int j=i+1;j<(i+pid_count);j++){
+                for (int j=i;j<(i+pid_count);j++){
                     data[j][5] = String.valueOf(pid_count);   
-                    sequence_count+=1;
-                    data[j][4] = String.valueOf(sequence_count);                    
+                    for (int k=i;k<i+pid_count;k++){
+                        if (Integer.parseInt(data[j][1]) >= Integer.parseInt(data[k][1])){
+                            count++; 
+                        }                      
+                    }
+                    for (int k=1;k<=pid_count;k++){
+                        if (count==k){
+                           data[j][4] = String.valueOf(k);
+                        }
+                    }
+                    count=0; 
+//                    sequence_count+=1;
+//                    data[j][4] = String.valueOf(sequence_count);                    
                 }
                 i+=pid_count-1;
                 sequence_count = 1;
+            }else{
+                    data[i][4] = String.valueOf(sequence_count);
+                    data[i][5] = String.valueOf(pid_count);         
+
             }
-            pid_count = 0;
+            pid_count = 0;sequence_count = 1;
         }
     }
 
