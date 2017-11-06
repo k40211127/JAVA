@@ -67,7 +67,7 @@ public class JavaApplication1 {
                             count++; 
                         }                      
                     }
-                    //此時99年那次=第三次進入 98第二次 97第三次
+                    //此時99年那次=第三次進入 98第二次 97第一次
                     for (int k=1;k<=pid_count;k++){
                         if (count==k){
                            data[j][4] = String.valueOf(k);
