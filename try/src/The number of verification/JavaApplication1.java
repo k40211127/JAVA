@@ -54,7 +54,7 @@ public class JavaApplication1 {
         for (int i = 0; i < data.length; i++) {
             for (int j=i; j < data.length;j++){
                 if (data[i][0].equals(data[j][0])){
-                    pid_count += 1;
+                    pid_count += 1; 
                 } else {
                     break;
                 }
@@ -82,7 +82,7 @@ public class JavaApplication1 {
                     // T   T   F   T   F   T        
                     // 1   2       4       6                     
                     //第一次生病時 是哪一年                  
-                    if (count==1){
+                    if (count==1){// 假如程式逐行讀取 年份是正序 則 102.103.104.105 則count一定=1 min_year=當下這年                   
                         min_year = Integer.parseInt(data[j][1]);                        
                         //data[j][6] = String.valueOf(min_year);
                         data[j][6] = String.valueOf(1);
